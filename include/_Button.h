@@ -12,6 +12,7 @@ public:
     void Init(char* filename, int width, int height, int posX, int posY, int posZ, int framesX, int framesY);
     void Draw();
     bool isClicked(int mouseX, int mouseY);
+    Vector3 GetPos();
 private:
     _textureLoader *m_tex;
     char* filename;

@@ -7,7 +7,7 @@ _Scene::_Scene()
     terrainInstance = new _StaticModelInstance(terrainBlueprint);
     m_inputs = new _inputs();
     m_camera = new _camera();
-    m_playButton = new _Button();
+    //m_playButton = new _Button();
 
     m_playButton = new _Button();
     m_helpButton = new _Button();
@@ -24,7 +24,7 @@ _Scene::~_Scene()
     delete m_inputs;
     delete m_camera;
 
-    delete m_playButton;
+    //delete m_playButton;
     delete m_playButton;
     delete m_helpButton;
     delete m_exitButton;
@@ -40,8 +40,11 @@ void _Scene::reSizeScene(int width, int height)
     glLoadIdentity();             // calling identity matrix
     gluPerspective(45, aspectRatio,0.1,1000.0); // setting perspective projection
 
-    this->width = GetSystemMetrics(SM_CXSCREEN);
-    this->height= GetSystemMetrics(SM_CYSCREEN);
+    //this->width = GetSystemMetrics(SM_CXSCREEN);
+    //this->height= GetSystemMetrics(SM_CYSCREEN);
+
+    this->width = width;
+    this->height= height;
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();             // calling identity matrix
@@ -100,7 +103,7 @@ void _Scene::initGL()
     terrainInstance->SetRotatable(true);
     // camera initialization
     m_camera->camInit();
-    
+
 
     // button initialization
     m_playButton->Init("images/play-btn.png",1,1,0,0,-10,1,1);
@@ -225,12 +228,11 @@ int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             handleHelpScreenInput(uMsg, wParam, lParam);
             break;
     }
-    return 0; 
+    return 0;
 }
 
 void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    // This is all the code from your old winMsg
     switch(uMsg)
     {
         case WM_KEYDOWN:
@@ -238,10 +240,39 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
             m_inputs->keyPressed(terrainInstance);
             m_inputs->keyPressed(m_camera);
             break;
-        // ... (all other cases like WM_KEYUP, LBUTTONDOWN, etc.) ...
+        case WM_KEYUP:
+
+        break;
+
+        case WM_LBUTTONDOWN:
+
+
+             mouseMapping(LOWORD(lParam), HIWORD(lParam));
+
+            break;
+
+        case WM_RBUTTONDOWN:
+
+            break;
+
+         case WM_MBUTTONDOWN:
+
+
+            break;
+
+        case WM_LBUTTONUP:
+        case WM_RBUTTONUP:
+        case WM_MBUTTONUP:
+
+            break;
+
         case WM_MOUSEMOVE:
             m_camera->handleMouse(hWnd, LOWORD(lParam), HIWORD(lParam), width / 2, height / 2);
             break;
+        case WM_MOUSEWHEEL:
+
+            break;
+
         default:
             break;
     }
@@ -254,6 +285,7 @@ void _Scene::handleMainMenuInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
         int mouseX = LOWORD(lParam);
         int mouseY = HIWORD(lParam);
 
+        
         if (m_playButton->isClicked(mouseX, mouseY)) {
             m_sceneState = SceneState::Playing;
         }
@@ -305,16 +337,24 @@ void _Scene::draw2DOverlay()
     // switch to 2d orthographic mode
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    gluOrtho2D(0, width, height, 0); // (0,0) is top-left
+    // left, right, bottom, top
+    gluOrtho2D(0,width,height,0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
 void _Scene::drawGameplay()
 {
+    // reenable 3D states that the 2D overlay disables
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE); // reenable culling for 3D
+
     m_camera->setUpCamera();
     terrainInstance->Draw();
 }
@@ -332,8 +372,6 @@ void _Scene::drawMainMenu()
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void _Scene::drawHelpScreen()
@@ -347,7 +385,5 @@ void _Scene::drawHelpScreen()
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
 }
 

@@ -43,18 +43,21 @@ void _Button::Draw(){
 
      m_tex->bindTexture();
 
-
      glBegin(GL_QUADS);
-       glTexCoord2f(xMin,yMax);
+       // bottom left v
+       glTexCoord2f(xMin, yMin); 
        glVertex2f(vertices[0].x,vertices[0].y);
 
-       glTexCoord2f(xMax,yMax);
+       // bottom right v
+       glTexCoord2f(xMax, yMin); 
        glVertex2f(vertices[1].x,vertices[1].y);
 
-       glTexCoord2f(xMax,yMin);
+       // top right v
+       glTexCoord2f(xMax, yMax); 
        glVertex2f(vertices[2].x,vertices[2].y);
 
-       glTexCoord2f(xMin,yMin);
+       // top left v
+       glTexCoord2f(xMin, yMax); 
        glVertex2f(vertices[3].x,vertices[3].y);
 
      glEnd();
@@ -74,4 +77,8 @@ bool _Button::isClicked(int mouseX, int mouseY) {
         return true;
     }
     return false;
+}
+
+Vector3 _Button::GetPos(){
+    return pos;
 }
