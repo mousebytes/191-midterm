@@ -1,0 +1,171 @@
+# depslib dependency file v1.0
+1762643736 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\main.cpp
+	<windows.h>
+	<stdlib.h>
+	<iostream>
+	<windows.h>
+	<gl/gl.h>
+	<_scene.h>
+
+1762642581 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
+	<_common.h>
+	<_light.h>
+	<_model.h>
+	<_inputs.h>
+	<_textureloader.h>
+	<_parallax.h>
+	<_skybox.h>
+	<_sprite.h>
+	<_timer.h>
+	<_3dmodelloader.h>
+	<_camera.h>
+	<_bullets.h>
+	<_collisioncheck.h>
+	"_StaticModelInstance.h"
+	"_inputs.h"
+
+1762572022 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
+	<iostream>
+	<windows.h>
+	<string>
+	<gl/gl.h>
+	<GL/glut.h>
+	<math.h>
+	<stdlib.h>
+	<time.h>
+	<chrono>
+	<fstream>
+	<vector>
+	<sstream>
+	<limits>
+	"_Time.h"
+
+1756492088 c:\users\amora\desktop\fresno state stuff\csci 191\common\include\gl\glut.h
+	<windows.h>
+	<stdlib.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_light.h
+	<_common.h>
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_model.h
+	<_common.h>
+
+1762639633 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_inputs.h
+	<_common.h>
+	<_model.h>
+	<_parallax.h>
+	<_skybox.h>
+	<_sprite.h>
+	<_camera.h>
+	<_3dmodelloader.h>
+	"_StaticModelInstance.h"
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_parallax.h
+	<_common.h>
+	<_textureLoader.h>
+	<_timer.h>
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_textureloader.h
+	<_common.h>
+	<SOIL2.h>
+
+1758760988 c:\users\amora\desktop\fresno state stuff\csci 191\common\include\soil2.h
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_timer.h
+	<_common.h>
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_skybox.h
+	<_common.h>
+	<_textureloader.h>
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_sprite.h
+	<_common.h>
+	<_textureloader.h>
+
+1762643540 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_camera.h
+	<_common.h>
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_3dmodelloader.h
+	<_common.h>
+	<_textureloader.h>
+	"Anorms.h"
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\anorms.h
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_bullets.h
+	<_common.h>
+	<_textureloader.h>
+	<_timer.h>
+
+1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_collisioncheck.h
+	<_common.h>
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_3dmodelloader.cpp
+	"_3dmodelloader.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_bullets.cpp
+	"_bullets.h"
+
+1762643692 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_camera.cpp
+	"_camera.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_collisioncheck.cpp
+	"_collisioncheck.h"
+
+1762642751 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_inputs.cpp
+	"_inputs.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_light.cpp
+	"_light.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_model.cpp
+	"_model.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_parallax.cpp
+	"_parallax.h"
+
+1762643380 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
+	"_scene.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
+	"_skybox.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_sprite.cpp
+	"_sprite.h"
+
+1762582681 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_textureloader.cpp
+	"_textureloader.h"
+
+1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_timer.cpp
+	"_timer.h"
+
+1762642195 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_staticmodelinstance.h
+	"_StaticModel.h"
+	"_common.h"
+
+1762572082 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_staticmodel.h
+	<_common.h>
+	<_textureloader.h>
+	"_ObjModel.h"
+
+1762385406 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_objmodel.h
+	"_common.h"
+	"_textureloader.h"
+
+1762223007 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_time.h
+	"_common.h"
+
+1762581033 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_objmodel.cpp
+	"_ObjModel.h"
+
+1762642238 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_staticmodelinstance.cpp
+	"_StaticModelInstance.h"
+
+1762222984 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_time.cpp
+	"_Time.h"
+
+1762638705 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_staticmodel.cpp
+	"_StaticModel.h"
+
