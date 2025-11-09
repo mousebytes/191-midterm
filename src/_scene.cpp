@@ -13,6 +13,8 @@ _Scene::_Scene()
     m_helpButton = new _Button();
     m_exitButton = new _Button();
     m_backButton = new _Button();
+
+    m_skybox = new _skyBox();
 }
 
 _Scene::~_Scene()
@@ -29,6 +31,8 @@ _Scene::~_Scene()
     delete m_helpButton;
     delete m_exitButton;
     delete m_backButton;
+
+    delete m_skybox;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -162,58 +166,6 @@ void _Scene::mouseMapping(int x, int y)
     gluUnProject(winX,winY,winZ,ModelViewM,projectionM,viewPort,&msX,&msY,&msZ);
 }
 
-
-
-/*
-int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    switch(uMsg)
-    {
-        case WM_KEYDOWN:
-        m_inputs->wParam = wParam;
-        m_inputs->keyPressed(terrainInstance);
-        m_inputs->keyPressed(m_camera);
-        break;
-
-        case WM_KEYUP:
-
-        break;
-
-        case WM_LBUTTONDOWN:
-
-
-             mouseMapping(LOWORD(lParam), HIWORD(lParam));
-
-            break;
-
-        case WM_RBUTTONDOWN:
-
-            break;
-
-         case WM_MBUTTONDOWN:
-
-
-            break;
-
-        case WM_LBUTTONUP:
-        case WM_RBUTTONUP:
-        case WM_MBUTTONUP:
-
-            break;
-
-        case WM_MOUSEMOVE:
-            m_camera->handleMouse(hWnd, LOWORD(lParam), HIWORD(lParam), width / 2, height / 2);
-            break;
-        case WM_MOUSEWHEEL:
-
-            break;
-
-        default:
-            break;
-
-    }
-}*/
-
 int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (m_sceneState)
@@ -285,7 +237,7 @@ void _Scene::handleMainMenuInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
         int mouseX = LOWORD(lParam);
         int mouseY = HIWORD(lParam);
 
-        
+
         if (m_playButton->isClicked(mouseX, mouseY)) {
             m_sceneState = SceneState::Playing;
         }
@@ -317,6 +269,14 @@ void _Scene::initGameplay()
     terrainInstance->SetPushable(true);
     terrainInstance->SetRotatable(true);
     m_camera->camInit();
+
+    m_skybox->skyBoxInit();
+    m_skybox->tex[0] = m_skybox->textures->loadTexture("images/skybox/front.jpg");
+    m_skybox->tex[1] = m_skybox->textures->loadTexture("images/skybox/back.jpg");
+    m_skybox->tex[2] = m_skybox->textures->loadTexture("images/skybox/top.jpg");
+    m_skybox->tex[3] = m_skybox->textures->loadTexture("images/skybox/bottom.jpg");
+    m_skybox->tex[4] = m_skybox->textures->loadTexture("images/skybox/right.jpg");
+    m_skybox->tex[5] = m_skybox->textures->loadTexture("images/skybox/left.jpg");
 }
 
 void _Scene::initMainMenu()
@@ -356,7 +316,15 @@ void _Scene::drawGameplay()
     glEnable(GL_CULL_FACE); // reenable culling for 3D
 
     m_camera->setUpCamera();
+    // stop writing to the depth buffer
+    // it was causing problems with a skybox-terrain interaction
+    glDepthMask(GL_FALSE);
+    m_skybox->drawSkyBox();
+    // start writing to the depth buffer again
+    glDepthMask(GL_TRUE);
     terrainInstance->Draw();
+
+
 }
 
 void _Scene::drawMainMenu()

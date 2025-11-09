@@ -27,6 +27,7 @@ void _skyBox::skyBoxInit()
 
 void _skyBox::drawSkyBox()
 {
+    glDisable(GL_CULL_FACE);
    glDisable(GL_LIGHTING); // if you are using room comment this line
    glPushMatrix();
 
@@ -106,6 +107,7 @@ void _skyBox::drawSkyBox()
    glPopMatrix();
 
    glEnable(GL_LIGHTING);
+   glEnable(GL_CULL_FACE);
 
 }
 

@@ -17,6 +17,7 @@
 #include"_StaticModelInstance.h"
 #include"_inputs.h"
 #include"_Button.h"
+#include"_skybox.h"
 
 class _Scene
 {
@@ -43,6 +44,7 @@ class _Scene
         _Button *m_playButton;
         _Button *m_helpButton;
         _Button *m_exitButton;
+        _skyBox *m_skybox;
         void initMainMenu();
         void drawMainMenu();
         void handleMainMenuInput(UINT,WPARAM,LPARAM);
