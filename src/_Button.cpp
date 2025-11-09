@@ -61,3 +61,17 @@ void _Button::Draw(){
 
     glPopMatrix();
 }
+
+bool _Button::isClicked(int mouseX, int mouseY) {
+    // get the button's screen boundaries
+    float left = pos.x - (width / 2.0f);
+    float right = pos.x + (width / 2.0f);
+    float top = pos.y - (height / 2.0f);
+    float bottom = pos.y + (height / 2.0f);
+
+    // check if the mouse click is inside the button
+    if (mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom) {
+        return true;
+    }
+    return false;
+}

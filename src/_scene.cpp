@@ -8,6 +8,11 @@ _Scene::_Scene()
     m_inputs = new _inputs();
     m_camera = new _camera();
     m_playButton = new _Button();
+
+    m_playButton = new _Button();
+    m_helpButton = new _Button();
+    m_exitButton = new _Button();
+    m_backButton = new _Button();
 }
 
 _Scene::~_Scene()
@@ -18,7 +23,12 @@ _Scene::~_Scene()
     delete terrainInstance;
     delete m_inputs;
     delete m_camera;
+
     delete m_playButton;
+    delete m_playButton;
+    delete m_helpButton;
+    delete m_exitButton;
+    delete m_backButton;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -74,7 +84,13 @@ void _Scene::initGL()
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
 
+    initGameplay();
+    initMainMenu();
+    initHelpScreen();
 
+    m_sceneState = SceneState::MainMenu;
+
+    /*
     // load terrain model
     terrainBlueprint->LoadModel("models/terrain.obj","models/Terrain_Tex.png");
     terrainInstance->pos = Vector3(0,-1,-5);
@@ -84,9 +100,12 @@ void _Scene::initGL()
     terrainInstance->SetRotatable(true);
     // camera initialization
     m_camera->camInit();
+    
 
     // button initialization
     m_playButton->Init("images/play-btn.png",1,1,0,0,-10,1,1);
+
+    */
 }
 
 void _Scene::drawScene()
@@ -95,11 +114,30 @@ void _Scene::drawScene()
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear bits in each itteration
     glLoadIdentity();             // calling identity matrix
 
-    
 
+
+    /*
     m_camera->setUpCamera();
     terrainInstance->Draw();
     m_playButton->Draw();
+    */
+
+    switch (m_sceneState)
+    {
+        case SceneState::MainMenu:
+            drawMainMenu();
+            break;
+        case SceneState::Paused:
+            // TODO: THIS
+        case SceneState::Playing:
+            drawGameplay();
+            break;
+        case SceneState::Help:
+            drawHelpScreen();
+            break;
+        default:
+            break;
+    }
 }
 
 
@@ -123,7 +161,7 @@ void _Scene::mouseMapping(int x, int y)
 
 
 
-
+/*
 int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch(uMsg)
@@ -171,4 +209,145 @@ int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             break;
 
     }
+}*/
+
+int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (m_sceneState)
+    {
+        case SceneState::MainMenu:
+            handleMainMenuInput(uMsg, wParam, lParam);
+            break;
+        case SceneState::Playing:
+            handleGameplayInput(hWnd, uMsg, wParam, lParam);
+            break;
+        case SceneState::Help:
+            handleHelpScreenInput(uMsg, wParam, lParam);
+            break;
+    }
+    return 0; 
 }
+
+void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    // This is all the code from your old winMsg
+    switch(uMsg)
+    {
+        case WM_KEYDOWN:
+            m_inputs->wParam = wParam;
+            m_inputs->keyPressed(terrainInstance);
+            m_inputs->keyPressed(m_camera);
+            break;
+        // ... (all other cases like WM_KEYUP, LBUTTONDOWN, etc.) ...
+        case WM_MOUSEMOVE:
+            m_camera->handleMouse(hWnd, LOWORD(lParam), HIWORD(lParam), width / 2, height / 2);
+            break;
+        default:
+            break;
+    }
+}
+
+void _Scene::handleMainMenuInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    if (uMsg == WM_LBUTTONDOWN)
+    {
+        int mouseX = LOWORD(lParam);
+        int mouseY = HIWORD(lParam);
+
+        if (m_playButton->isClicked(mouseX, mouseY)) {
+            m_sceneState = SceneState::Playing;
+        }
+        else if (m_helpButton->isClicked(mouseX, mouseY)) {
+            m_sceneState = SceneState::Help;
+        }
+
+    }
+}
+
+void _Scene::handleHelpScreenInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    if (uMsg == WM_LBUTTONDOWN)
+    {
+        int mouseX = LOWORD(lParam);
+        int mouseY = HIWORD(lParam);
+
+        if (m_backButton->isClicked(mouseX, mouseY)) {
+            m_sceneState = SceneState::MainMenu;
+        }
+    }
+}
+
+void _Scene::initGameplay()
+{
+    terrainBlueprint->LoadModel("models/terrain.obj","models/Terrain_Tex.png");
+    terrainInstance->pos = Vector3(0,-1,-5);
+    terrainInstance->scale = Vector3(15,15,15);
+    terrainInstance->SetPushable(true);
+    terrainInstance->SetRotatable(true);
+    m_camera->camInit();
+}
+
+void _Scene::initMainMenu()
+{
+    // positions are 2d pixels, assumes (0,0) is top left
+    m_playButton->Init("images/play-btn.png", 200, 70, width/2, height/2 - 100, 0, 1, 1);
+    m_helpButton->Init("images/play-btn.png", 200, 70, width/2, height/2, 0, 1, 1); // Using play-btn as placeholder
+    m_exitButton->Init("images/play-btn.png", 200, 70, width/2, height/2 + 100, 0, 1, 1); // Using play-btn as placeholder
+}
+
+void _Scene::initHelpScreen()
+{
+    m_backButton->Init("images/play-btn.png", 150, 50, 100, height - 100, 0, 1, 1); // Placeholder
+}
+
+void _Scene::draw2DOverlay()
+{
+    // switch to 2d orthographic mode
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0, width, height, 0); // (0,0) is top-left
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void _Scene::drawGameplay()
+{
+    m_camera->setUpCamera();
+    terrainInstance->Draw();
+}
+
+void _Scene::drawMainMenu()
+{
+    draw2DOverlay(); // set up 2D drawing
+
+    // draw the buttons
+    m_playButton->Draw();
+    m_helpButton->Draw();
+    m_exitButton->Draw();
+
+    // restore 3D projection
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+}
+
+void _Scene::drawHelpScreen()
+{
+    draw2DOverlay(); // Set up 2D drawing
+
+    // draw something here in the future
+    m_backButton->Draw();
+
+    // Restore 3D projection
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+}
+

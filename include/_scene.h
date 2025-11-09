@@ -35,19 +35,39 @@ class _Scene
 
         int width, height;  // keep record of the screen size
 
+        void initGameplay();
+        void drawGameplay();
+        void handleGameplayInput(HWND,UINT,WPARAM,LPARAM);
+
+        // --- Main Menu Scene ---
+        _Button *m_playButton;
+        _Button *m_helpButton;
+        _Button *m_exitButton;
+        void initMainMenu();
+        void drawMainMenu();
+        void handleMainMenuInput(UINT,WPARAM,LPARAM);
+
+        // --- Help Scene ---
+        _Button *m_backButton;
+        void initHelpScreen();
+        void drawHelpScreen();
+        void handleHelpScreenInput(UINT,WPARAM,LPARAM);
+
+    protected:
+
+    private:
 
         _StaticModel *terrainBlueprint;
         _StaticModelInstance *terrainInstance;
 
         _inputs *m_inputs;
         _camera *m_camera;
-        _Button *m_playButton;
+        //_Button *m_playButton;
 
         enum SceneState {MainMenu, Help, Playing, Paused};
         SceneState m_sceneState = SceneState::MainMenu;
-    protected:
 
-    private:
+        void draw2DOverlay();
 };
 
 #endif // _SCENE_H
