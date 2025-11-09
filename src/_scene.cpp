@@ -189,7 +189,6 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     {
         case WM_KEYDOWN:
             m_inputs->wParam = wParam;
-            m_inputs->keyPressed(terrainInstance);
             m_inputs->keyPressed(m_camera);
             break;
         case WM_KEYUP:

@@ -11,7 +11,7 @@ _camera::~_camera()
 }
 void _camera::camInit()
 {
-    eye.x =0; eye.y =0; eye.z =10;
+    eye.x =0; eye.y =0; eye.z =1;
     des.x =0; des.y =0; des.z =0;
     up.x  =0; up.y  =1; up.z  =0;
 
@@ -57,16 +57,41 @@ void _camera::camMoveFdBd(int dir)
 {
        float moveStep = step * _Time::deltaTime;
        
-       eye.z += moveStep*dir; // if forward dir =1 else dir =-1
-       des.z += moveStep*dir;
+       // calc the "forward" direction vector on the XZ plane
+       // this is based on the camera's yaw (rotAngle.x)
+       // (des - eye) gives the forward vector
+       float fwdX = -sin(rotAngle.x * PI / 180.0);
+       float fwdZ = -cos(rotAngle.x * PI / 180.0);
+
+       // 1 for forward (W) and -1 for backwards (S)
+       float moveAmount = moveStep * dir;
+
+       // apply movement
+       eye.x += fwdX * moveAmount;
+       eye.z += fwdZ * moveAmount;
+
+       des.x += fwdX * moveAmount;
+       des.z += fwdZ * moveAmount;
 }
 
 void _camera::camMoveLtRt(int dir)
 {
     float moveStep = step * _Time::deltaTime;
 
-    eye.x += moveStep*dir;
-    des.x += moveStep*dir;
+    // calc the "right" direction vector (strafe)
+    // this is the forward vector rotated 90 degrees
+    float rightX = cos(rotAngle.x * PI / 180.0);
+    float rightZ = -sin(rotAngle.x * PI / 180.0);
+
+    // -1 for left (A) 1 for right (D)
+    float moveAmount = moveStep * dir;
+
+    // apply the strafe movement 
+    eye.x += rightX * moveAmount;
+    eye.z += rightZ * moveAmount;
+    
+    des.x += rightX * moveAmount;
+    des.z += rightZ * moveAmount;
 }
 
 void _camera::setUpCamera()
@@ -88,10 +113,12 @@ void _camera::handleMouse(HWND hWnd, int mouseX, int mouseY, int centerX, int ce
     float deltaY = (float)(mouseY - centerY);
 
     // apply to camera rotation
-    rotAngle.x += deltaX * mouseSensitivity;
+    rotAngle.x -= deltaX * mouseSensitivity;
     
     // invert y axis (screen y is down, camera up is up)
-    rotAngle.y -= deltaY * mouseSensitivity;
+    //rotAngle.y -= deltaY * mouseSensitivity;
+    // no longer invert
+    rotAngle.y +=deltaY*mouseSensitivity;
 
     // clamp vertical rotation
     // we use 89.0 to avoid gimbal lock at 90.0

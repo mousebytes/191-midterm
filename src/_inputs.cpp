@@ -150,18 +150,22 @@ void _inputs::keyPressed(_camera* cm)
    // cout<< wParam << endl;
      switch(wParam)
      {
-     case VK_LEFT:  
+     case 'A':
+     case 'a':
            cm->camMoveLtRt(-1);
         break;
-     case VK_RIGHT:
+     case 'D':
+     case 'd':
             cm->camMoveLtRt(1);
         break;
 
-     case VK_UP:
-            cm->camMoveFdBd(-1);
-        break;
-     case VK_DOWN:
+     case 'W':
+     case 'w':
             cm->camMoveFdBd(1);
+        break;
+     case 'S':
+     case 's':
+            cm->camMoveFdBd(-1);
         break;
 
      case 73:    //i
