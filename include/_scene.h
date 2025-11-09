@@ -16,7 +16,7 @@
 #include<_collisioncheck.h>
 #include"_StaticModelInstance.h"
 #include"_inputs.h"
-
+#include"_Button.h"
 
 class _Scene
 {
@@ -41,6 +41,10 @@ class _Scene
 
         _inputs *m_inputs;
         _camera *m_camera;
+        _Button *m_playButton;
+
+        enum SceneState {MainMenu, Help, Playing, Paused};
+        SceneState m_sceneState = SceneState::MainMenu;
     protected:
 
     private:

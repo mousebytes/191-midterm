@@ -16,7 +16,7 @@ GLuint _textureLoader::loadTexture(char* fileName)
     glBindTexture(GL_TEXTURE_2D,textID);
 
     image = SOIL_load_image(fileName,&width,&height,0,SOIL_LOAD_RGBA);
-    if(!image)cout<<"Error : *******file did not load *****"<<endl;
+    if(!image){cout<<"Error : *******file did not load *****"<<endl; return -1;}
 
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,image);
     SOIL_free_image_data(image);
@@ -24,8 +24,8 @@ GLuint _textureLoader::loadTexture(char* fileName)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 
     return textID;
 }

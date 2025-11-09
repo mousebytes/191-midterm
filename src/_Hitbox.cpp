@@ -1,4 +1,6 @@
 #include "_Hitbox.h"
+// extern var that's defined in _common.h but has gotta be defined in a .cpp
+// and this just makes the most sense to me
 bool isDebug=true;
 _Hitbox::_Hitbox() {
     // Default 1x1x1 cube

@@ -7,6 +7,7 @@ _Scene::_Scene()
     terrainInstance = new _StaticModelInstance(terrainBlueprint);
     m_inputs = new _inputs();
     m_camera = new _camera();
+    m_playButton = new _Button();
 }
 
 _Scene::~_Scene()
@@ -17,6 +18,7 @@ _Scene::~_Scene()
     delete terrainInstance;
     delete m_inputs;
     delete m_camera;
+    delete m_playButton;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -82,6 +84,9 @@ void _Scene::initGL()
     terrainInstance->SetRotatable(true);
     // camera initialization
     m_camera->camInit();
+
+    // button initialization
+    m_playButton->Init("images/play-btn.png",1,1,0,0,-10,1,1);
 }
 
 void _Scene::drawScene()
@@ -90,9 +95,11 @@ void _Scene::drawScene()
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear bits in each itteration
     glLoadIdentity();             // calling identity matrix
 
+    
+
     m_camera->setUpCamera();
     terrainInstance->Draw();
-
+    m_playButton->Draw();
 }
 
 
