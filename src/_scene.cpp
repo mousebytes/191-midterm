@@ -15,6 +15,8 @@ _Scene::_Scene()
     m_backButton = new _Button();
 
     m_skybox = new _skyBox();
+
+    m_player_blueprint = new _AnimatedModel();
 }
 
 _Scene::~_Scene()
@@ -33,6 +35,8 @@ _Scene::~_Scene()
     delete m_backButton;
 
     delete m_skybox;
+
+    delete m_player;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -96,23 +100,6 @@ void _Scene::initGL()
     initHelpScreen();
 
     m_sceneState = SceneState::MainMenu;
-
-    /*
-    // load terrain model
-    terrainBlueprint->LoadModel("models/terrain.obj","models/Terrain_Tex.png");
-    terrainInstance->pos = Vector3(0,-1,-5);
-    terrainInstance->scale = Vector3(15,15,15);
-    // DEBUG change later
-    terrainInstance->SetPushable(true);
-    terrainInstance->SetRotatable(true);
-    // camera initialization
-    m_camera->camInit();
-
-
-    // button initialization
-    m_playButton->Init("images/play-btn.png",1,1,0,0,-10,1,1);
-
-    */
 }
 
 void _Scene::drawScene()
@@ -120,14 +107,6 @@ void _Scene::drawScene()
     _Time::Update();
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear bits in each itteration
     glLoadIdentity();             // calling identity matrix
-
-
-
-    /*
-    m_camera->setUpCamera();
-    terrainInstance->Draw();
-    m_playButton->Draw();
-    */
 
     switch (m_sceneState)
     {
@@ -196,8 +175,6 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         break;
 
         case WM_LBUTTONDOWN:
-
-
              mouseMapping(LOWORD(lParam), HIWORD(lParam));
 
             break;
@@ -214,7 +191,6 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         case WM_LBUTTONUP:
         case WM_RBUTTONUP:
         case WM_MBUTTONUP:
-
             break;
 
         case WM_MOUSEMOVE:
@@ -267,6 +243,13 @@ void _Scene::initGameplay()
     terrainInstance->scale = Vector3(15,15,15);
     terrainInstance->SetPushable(true);
     terrainInstance->SetRotatable(true);
+
+    Vector3 terrainMin = Vector3(-1, -.25,-1);
+    // the y -0.8f means that it's 80% from the center towards the bottom (-1.0f)
+    // note that it must always be between -1.0f & 1.0f
+    Vector3 terrainMax = Vector3(1, -.2, 1);
+    terrainInstance->AddCollider(new _CubeHitbox(terrainMin, terrainMax));
+
     m_camera->camInit();
 
     m_skybox->skyBoxInit();
@@ -276,6 +259,14 @@ void _Scene::initGameplay()
     m_skybox->tex[3] = m_skybox->textures->loadTexture("images/skybox/bottom.jpg");
     m_skybox->tex[4] = m_skybox->textures->loadTexture("images/skybox/right.jpg");
     m_skybox->tex[5] = m_skybox->textures->loadTexture("images/skybox/left.jpg");
+
+    m_player_blueprint->LoadAnimation("models/skater/idle",3,"models/skater/idle.jpg");
+
+    m_player = new _ModelInstance(m_player_blueprint);
+
+    // add sphere collider centered at (0,0,0) local space & r=1.0
+    // note: model is norm -1 to +1
+    m_player->AddCollider(new _SphereHitbox(Vector3(0,0,0),1.0f));
 }
 
 void _Scene::initMainMenu()
@@ -314,6 +305,26 @@ void _Scene::drawGameplay()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE); // reenable culling for 3D
 
+    // ---- PLAYER PHYSICS ----
+
+    // assume player's in air start of every frame
+    m_player->isGrounded=false;
+
+    //check for collisions (against terrain in this case)
+    if(m_player->CheckCollision(terrainInstance)){
+        // collision detected
+        m_player->isGrounded=true;
+
+        // stop downward velocity
+        if(m_player->velocity.y < 0){
+            m_player->velocity.y = 0;
+        }
+        // TODO: could also add code to push player back up
+        // in the event they sunk into floor
+    }
+
+    m_player->Update();
+
     m_camera->setUpCamera();
     // stop writing to the depth buffer
     // it was causing problems with a skybox-terrain interaction
@@ -322,6 +333,8 @@ void _Scene::drawGameplay()
     // start writing to the depth buffer again
     glDepthMask(GL_TRUE);
     terrainInstance->Draw();
+
+    m_player->Draw();
 
 
 }

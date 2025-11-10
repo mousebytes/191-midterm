@@ -18,6 +18,10 @@
 #include"_inputs.h"
 #include"_Button.h"
 #include"_skybox.h"
+#include"_Collider.h"
+#include"_CubeHitbox.h"
+#include"_SphereHitbox.h"
+#include"_ModelInstance.h"
 
 class _Scene
 {
@@ -65,6 +69,8 @@ class _Scene
         _inputs *m_inputs;
         _camera *m_camera;
         //_Button *m_playButton;
+        _AnimatedModel *m_player_blueprint;
+        _ModelInstance *m_player;
 
         enum SceneState {MainMenu, Help, Playing, Paused};
         SceneState m_sceneState = SceneState::MainMenu;

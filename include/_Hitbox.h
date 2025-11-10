@@ -15,7 +15,11 @@ public:
     // The function that draws the box as lines
     void Draw();
 
-    
+    // checks for collision with another box
+    bool isColliding(_Hitbox& other);
+
+    // checks if a 3D point is in this hitbox
+    bool isPointInside(Vector3 point);
 
 };
 

@@ -16,6 +16,7 @@
 #include<vector>
 #include <sstream>
 #include <limits>
+#include<algorithm>
 
 #include"_Time.h"
 
@@ -49,6 +50,13 @@ struct Vector3{
 
     Vector3 operator+(Vector3& other){
         return Vector3(x+other.x, y+other.y, z+other.z);
+    }
+    Vector3 operator+(const Vector3& other){
+        return Vector3(x+other.x, y+other.y, z+other.z);
+    }
+
+    Vector3 operator+(float scalar){
+        return Vector3(x+scalar,y+scalar,z+scalar);
     }
 
     Vector3 operator-(Vector3& other){

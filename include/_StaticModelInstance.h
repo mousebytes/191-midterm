@@ -3,6 +3,7 @@
 
 #include "_StaticModel.h" // Needs the blueprint
 #include "_common.h"
+#include"_Collider.h"
 
 class _StaticModelInstance {
 public:
@@ -16,6 +17,8 @@ public:
     Vector3 scale;
     Vector3 rotation;
 
+    vector<_Collider*> colliders;
+
     
 
     void SetPushable(bool flag);
@@ -23,9 +26,14 @@ public:
     void SetRotatable(bool flag);
     void Rotate(float x, float y, float z);
 
+    void AddCollider(_Collider* collider);
+    void DrawColliders();
+    bool CheckCollision(_StaticModelInstance *other);
 
     // deprecated funcs
     void RotateSmoothly(float x, float y, float z, float interp);
+
+    
 
 private:
     _StaticModel* blueprint;
@@ -34,6 +42,7 @@ private:
     bool isPushable;
     // can this thing rotate
     bool isRotatable;
+
 };
 
 #endif // _STATICMODELINSTANCE_H
