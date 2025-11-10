@@ -72,6 +72,9 @@ class _Scene
         _AnimatedModel *m_player_blueprint;
         _ModelInstance *m_player;
 
+        _StaticModel *m_humanBlueprint;
+        _StaticModelInstance *m_humanInstance;
+
         enum SceneState {MainMenu, Help, Playing, Paused};
         SceneState m_sceneState = SceneState::MainMenu;
 

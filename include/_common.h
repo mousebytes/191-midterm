@@ -2,6 +2,9 @@
 #define _COMMON_H
 
 #include<iostream>
+// needed this because windows.h was killing my intellisense
+// and causing false errors :(
+#define NOMINMAX
 #include<windows.h>
 #include<string>
 
@@ -17,6 +20,7 @@
 #include <sstream>
 #include <limits>
 #include<algorithm>
+#include<cmath>
 
 #include"_Time.h"
 

@@ -17,6 +17,9 @@ _Scene::_Scene()
     m_skybox = new _skyBox();
 
     m_player_blueprint = new _AnimatedModel();
+
+    m_humanBlueprint = new _StaticModel();
+    m_humanInstance = new _StaticModelInstance(m_humanBlueprint);
 }
 
 _Scene::~_Scene()
@@ -37,6 +40,9 @@ _Scene::~_Scene()
     delete m_skybox;
 
     delete m_player;
+
+    delete m_humanBlueprint;
+    delete m_humanInstance;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -260,13 +266,15 @@ void _Scene::initGameplay()
     m_skybox->tex[4] = m_skybox->textures->loadTexture("images/skybox/right.jpg");
     m_skybox->tex[5] = m_skybox->textures->loadTexture("images/skybox/left.jpg");
 
-    m_player_blueprint->LoadAnimation("models/skater/idle",3,"models/skater/idle.jpg");
+    m_player_blueprint->LoadAnimation("models/player/idle",2,"models/player/Human_Atlas.png");
 
     m_player = new _ModelInstance(m_player_blueprint);
 
     // add sphere collider centered at (0,0,0) local space & r=1.0
     // note: model is norm -1 to +1
     m_player->AddCollider(new _SphereHitbox(Vector3(0,0,0),1.0f));
+
+    m_humanBlueprint->LoadModel("models/player/idle_01.obj","models/player/Human_Atlas.png");
 }
 
 void _Scene::initMainMenu()
@@ -332,6 +340,9 @@ void _Scene::drawGameplay()
     m_skybox->drawSkyBox();
     // start writing to the depth buffer again
     glDepthMask(GL_TRUE);
+
+    m_humanInstance->Draw();
+
     terrainInstance->Draw();
 
     m_player->Draw();

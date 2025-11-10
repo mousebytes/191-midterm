@@ -13,9 +13,10 @@ void _CubeHitbox::Draw() {
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
+    glColor3f(1.0f, 0, 0);
 
     if (drawTopFace) {
-        glColor3f(1.0f, 0, 0);
+        
 
         // draw the top face as a solid quad
         glBegin(GL_QUADS);
@@ -59,6 +60,7 @@ void _CubeHitbox::Draw() {
     glEnable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
+    glColor3f(1.0f, 1.0f, 1.0f);
 }
 
 _Collider* _CubeHitbox::GetWorldSpaceCollider(const Vector3& pos, const Vector3& scale, const Vector3& rot) {
@@ -77,44 +79,42 @@ _Collider* _CubeHitbox::GetWorldSpaceCollider(const Vector3& pos, const Vector3&
     return new _CubeHitbox(worldMin, worldMax);
 }
 
-// --- Double-Dispatch ---
 
 bool _CubeHitbox::CheckCollision(_Collider* other) {
     return other->CheckCollisionWithCube(this);
 }
 
 bool _CubeHitbox::CheckCollisionWithCube(_CubeHitbox* cube) {
-    // This is the AABB-vs-AABB logic from your old _Hitbox::isColliding()
     
-    // Check X-axis for separation
+    // check x axis for separation
     if (this->max.x < cube->min.x || this->min.x > cube->max.x) {
         return false;
     }
-    // Check Y-axis for separation
+    // check y axis for separation
     if (this->max.y < cube->min.y || this->min.y > cube->max.y) {
         return false;
     }
-    // Check Z-axis for separation
+    // check z axis for separation
     if (this->max.z < cube->min.z || this->min.z > cube->max.z) {
         return false;
     }
-    // No separation found, they are overlapping
+    // no separation found they are overlapping
     return true;
 }
 
 bool _CubeHitbox::CheckCollisionWithSphere(_SphereHitbox* sphere) {
-    // AABB-vs-Sphere logic
+    // cube vs sphere logic
     
-    // Find the point on the AABB closest to the sphere's center
+    // find the point on the cube closest to the sphere's center
     float closestX = std::max(this->min.x, std::min(sphere->center.x, this->max.x));
     float closestY = std::max(this->min.y, std::min(sphere->center.y, this->max.y));
     float closestZ = std::max(this->min.z, std::min(sphere->center.z, this->max.z));
 
-    // Get distance squared between this closest point and the sphere center
+    // get distance squared between this closest point and the sphere center
     float distSq = pow(closestX - sphere->center.x, 2) +
                    pow(closestY - sphere->center.y, 2) +
                    pow(closestZ - sphere->center.z, 2);
 
-    // If the distance squared is less than the radius squared, they collide
+    // if the distance squared is less than the radius squared, they collide
     return distSq < (sphere->radius * sphere->radius);
 }

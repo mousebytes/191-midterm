@@ -105,7 +105,7 @@ void _ModelInstance::Actions()
     switch(actionTrigger)
     {
         case STAND:
-            SetAnimation(0, 2); // "stand" animation frames
+            SetAnimation(0, 1); // "stand" animation frames
             break;
         case RUN:
             SetAnimation(40, 45); // "run" animation frames

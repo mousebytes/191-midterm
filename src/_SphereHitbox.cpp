@@ -10,9 +10,10 @@ void _SphereHitbox::Draw() {
     // draw wireframe sphere
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
-    glColor3f(0.0f, 1.0f, 0.0f); // Green
+    
 
     glPushMatrix();
+    glColor3f(0.0f, 1.0f, 0.0f); // Green
     glTranslatef(center.x, center.y, center.z);
 
     //glutSolidSphere()
@@ -53,6 +54,7 @@ void _SphereHitbox::Draw() {
     
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
+    glColor3f(1.0f, 1.0f, 1.0f);
 }
 
 _Collider* _SphereHitbox::GetWorldSpaceCollider(const Vector3& pos, const Vector3& scale, const Vector3& rot) {
