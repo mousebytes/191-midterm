@@ -9,7 +9,7 @@ class _CubeHitbox : public _Collider{
     Vector3 min;
     Vector3 max;
 
-    _CubeHitbox(Vector3 vMin, Vector3 vMax);
+    _CubeHitbox(Vector3 vMin, Vector3 vMax, ColliderType type = COLLIDER_GENERAL);
 
     virtual void Draw() override;
     virtual _Collider* GetWorldSpaceCollider(const Vector3& pos, const Vector3& scale, const Vector3& rot) override;

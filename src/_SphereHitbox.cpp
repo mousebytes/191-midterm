@@ -1,9 +1,10 @@
 #include "_SphereHitbox.h"
 #include "_CubeHitbox.h" 
 
-_SphereHitbox::_SphereHitbox(Vector3 center, float radius) {
+_SphereHitbox::_SphereHitbox(Vector3 center, float radius, ColliderType type) {
     this->center = center;
     this->radius = radius;
+    m_type = type;
 }
 
 void _SphereHitbox::Draw() {
@@ -71,7 +72,7 @@ _Collider* _SphereHitbox::GetWorldSpaceCollider(const Vector3& pos, const Vector
     float worldRadius = radius * std::max({scale.x, scale.y, scale.z});
     
     // return a new, temporary world space sphere
-    return new _SphereHitbox(worldCenter, worldRadius);
+    return new _SphereHitbox(worldCenter, worldRadius, this->m_type);
 }
 
 

@@ -9,15 +9,17 @@ class _camera
         _camera();
         virtual ~_camera();
 
-        vec3 eye;  // eye position
-        vec3 des;  // where you are looking at
-        vec3 up;   // camera head orientation
+        Vector3 eye;  // eye position
+        Vector3 des;  // where you are looking at
+        Vector3 up;   // camera head orientation
 
         float step;    // camera speed
         vec2 rotAngle; // rotation of the camera [left/right/up/down]
         float distance;// eye to source
 
         float mouseSensitivity;
+
+        Vector2 deltas;
 
         enum{FORWARD,BACKWARD,LEFT,RIGHT};
 
@@ -35,6 +37,7 @@ class _camera
         // handle mouse movement
         void handleMouse(HWND hWnd, int mouseX, int mouseY, int centerX, int centerY);
 
+        Vector2 GetDeltas();
     protected:
 
     private:

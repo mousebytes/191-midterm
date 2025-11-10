@@ -1,13 +1,14 @@
-#include"_ModelInstance.h"
+#include"_AnimatedModelInstance.h"
 
 
 
-_ModelInstance::_ModelInstance(_AnimatedModel* modelAsset){
+_AnimatedModelInstance::_AnimatedModelInstance(_AnimatedModel* modelAsset){
     blueprint = modelAsset;
 
     pos.x=pos.y=0;
     pos.z=-10.0;
     rotation = Vector3();
+    scale.x=scale.y=scale.z=1.0f;
 
     currentFrame=0;
     interp=0.0;
@@ -22,14 +23,14 @@ _ModelInstance::_ModelInstance(_AnimatedModel* modelAsset){
 
 }
 
-_ModelInstance::~_ModelInstance(){
+_AnimatedModelInstance::~_AnimatedModelInstance(){
     for(_Collider* collider : colliders){
         delete collider;
     }
     colliders.clear();
 }
 
-void _ModelInstance::SetAnimation(int start, int end){
+void _AnimatedModelInstance::SetAnimation(int start, int end){
     startFrame = start;
     endFrame = end;
     // reset to beginning of new animation
@@ -37,7 +38,7 @@ void _ModelInstance::SetAnimation(int start, int end){
     interp=0.0f;
 }
 
-void _ModelInstance::Update(){
+void _AnimatedModelInstance::Update(){
     const float gravity = -9.8f;
 
     if(!isGrounded){
@@ -51,14 +52,15 @@ void _ModelInstance::Update(){
     Animate(startFrame,endFrame,&currentFrame,&interp);
 }
 
-void _ModelInstance::Draw(){
+void _AnimatedModelInstance::Draw(){
     glPushMatrix();
-
         glTranslatef(pos.x,pos.y,pos.z);
         //DEBUG ROT
         glRotatef(rotation.x,1.0f,0.0f,0.0f);
         glRotatef(rotation.y,0.0f,1.0f,0.0f);
         glRotatef(rotation.z,0.0f,0.0f,1.0f);
+
+        glScalef(scale.x,scale.y,scale.z);
 
         // calc next frame -- handle wraparound
         int nextFrame = currentFrame+1;
@@ -77,7 +79,7 @@ void _ModelInstance::Draw(){
     glPopMatrix();
 }
 
-void _ModelInstance::Animate(int start, int end, int* frame, float* interp){
+void _AnimatedModelInstance::Animate(int start, int end, int* frame, float* interp){
     // animation speed (fps)
     float animSpeed = 10.0f;
 
@@ -99,7 +101,7 @@ void _ModelInstance::Animate(int start, int end, int* frame, float* interp){
     }
 }
 
-void _ModelInstance::Actions()
+void _AnimatedModelInstance::Actions()
 {
     // Check the trigger and set the correct animation
     switch(actionTrigger)
@@ -120,11 +122,11 @@ void _ModelInstance::Actions()
     }
 }
 
-void _ModelInstance::AddCollider(_Collider* collider) {
+void _AnimatedModelInstance::AddCollider(_Collider* collider) {
     colliders.push_back(collider);
 }
 
-void _ModelInstance::DrawColliders() {
+void _AnimatedModelInstance::DrawColliders() {
     if (!isDebug) return;
 
     // this is called inside Draw(), so the matrix
@@ -134,7 +136,7 @@ void _ModelInstance::DrawColliders() {
     }
 }
 
-bool _ModelInstance::CheckCollision(_StaticModelInstance* other) {
+bool _AnimatedModelInstance::CheckCollision(_StaticModelInstance* other) {
     // checks all of our colliders against all of the other's colliders
 
     for (_Collider* myModelCol : this->colliders) {

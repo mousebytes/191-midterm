@@ -18,10 +18,10 @@ void _skyBox::skyBoxInit()
 
     rotation.x= rotation.y=rotation.z = 0;
     pos.x = pos.y =0;
-    pos.z = -9.0;
+    pos.z = -10.0;
 
-    boxSize.x = boxSize.z = 30.0;
-    boxSize.y = 5.0;
+    boxSize.x = boxSize.z = 100.0;
+    boxSize.y = 20.0;
 
 }
 

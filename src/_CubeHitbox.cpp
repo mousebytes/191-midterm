@@ -4,9 +4,10 @@
 bool isDebug = true;
 bool drawTopFace = true;
 
-_CubeHitbox::_CubeHitbox(Vector3 vMin, Vector3 vMax) {
+_CubeHitbox::_CubeHitbox(Vector3 vMin, Vector3 vMax, ColliderType type) {
     min = vMin;
     max = vMax;
+    m_type = type;
 }
 
 void _CubeHitbox::Draw() {
@@ -76,7 +77,7 @@ _Collider* _CubeHitbox::GetWorldSpaceCollider(const Vector3& pos, const Vector3&
     Vector3 worldMax = scaledMax + pos;
     
     // return a new, temporary world space cube hitbox
-    return new _CubeHitbox(worldMin, worldMax);
+    return new _CubeHitbox(worldMin, worldMax, this->m_type);;
 }
 
 

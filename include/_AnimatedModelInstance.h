@@ -1,5 +1,5 @@
-#ifndef _MODELINSTANCE_H
-#define _MODELINSTANCE_H
+#ifndef _ANIMATEDMODELINSTANCE_H
+#define _ANIMATEDMODELINSTANCE_H
 
 #include<_common.h>
 #include"_AnimatedModel.h"
@@ -9,11 +9,11 @@
 #include"_SphereHitbox.h"
 
 
-class _ModelInstance{
+class _AnimatedModelInstance{
     public:
-        //_ModelInstance(_MD2Model* modelAsset);
-        _ModelInstance(_AnimatedModel* modelAsset);
-        ~_ModelInstance();
+        //_AnimatedModelInstance(_MD2Model* modelAsset);
+        _AnimatedModelInstance(_AnimatedModel* modelAsset);
+        ~_AnimatedModelInstance();
 
         // animation logic
         void Update();
@@ -28,6 +28,7 @@ class _ModelInstance{
 
         Vector3 pos;
         Vector3 rotation;
+        Vector3 scale;
 
         Vector3 velocity;
         bool isGrounded;
@@ -52,4 +53,4 @@ class _ModelInstance{
 };
 
 
-#endif // _MODELINSTANCE_H
+#endif //_ANIMATEDMODELINSTANCE_H

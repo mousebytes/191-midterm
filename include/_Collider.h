@@ -3,7 +3,11 @@
 
 #include "_common.h"
 
-
+enum ColliderType {
+    COLLIDER_GENERAL,
+    COLLIDER_FLOOR,
+    COLLIDER_WALL
+};
 
 // forward declare the types
 class _CubeHitbox;
@@ -11,7 +15,10 @@ class _SphereHitbox;
 
 class _Collider {
 public:
+    _Collider() : m_type(COLLIDER_GENERAL) {}
     virtual ~_Collider() {}
+
+    ColliderType m_type;
 
     // draws the colliders wireframe
     virtual void Draw() = 0;

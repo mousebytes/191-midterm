@@ -101,6 +101,7 @@ void _camera::setUpCamera()
               up.x, up.y, up.z);
 }
 
+// deprecated
 void _camera::handleMouse(HWND hWnd, int mouseX, int mouseY, int centerX, int centerY){
     // if the mouse is at the center it's because we just set it
     // in the last frame, ignore this "fake" event
@@ -109,16 +110,15 @@ void _camera::handleMouse(HWND hWnd, int mouseX, int mouseY, int centerX, int ce
     }
 
     // calc delta from the center
-    float deltaX = (float)(mouseX - centerX);
-    float deltaY = (float)(mouseY - centerY);
+    deltas.x = (float)(mouseX - centerX);
+    deltas.y = (float)(mouseY - centerY);
 
     // apply to camera rotation
-    rotAngle.x -= deltaX * mouseSensitivity;
+    rotAngle.x -= deltas.x * mouseSensitivity;
     
     // invert y axis (screen y is down, camera up is up)
-    //rotAngle.y -= deltaY * mouseSensitivity;
-    // no longer invert
-    rotAngle.y +=deltaY*mouseSensitivity;
+    //rotAngle.y -= deltas.y * mouseSensitivity;
+    rotAngle.y +=deltas.y*mouseSensitivity;
 
     // clamp vertical rotation
     // we use 89.0 to avoid gimbal lock at 90.0
@@ -137,4 +137,8 @@ void _camera::handleMouse(HWND hWnd, int mouseX, int mouseY, int centerX, int ce
     POINT centerPoint = { centerX, centerY };
     ClientToScreen(hWnd, &centerPoint);
     SetCursorPos(centerPoint.x, centerPoint.y);
+}
+
+Vector2 _camera::GetDeltas(){
+    return deltas;
 }

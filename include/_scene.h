@@ -21,7 +21,8 @@
 #include"_Collider.h"
 #include"_CubeHitbox.h"
 #include"_SphereHitbox.h"
-#include"_ModelInstance.h"
+#include"_AnimatedModelInstance.h"
+#include"_Player.h"
 
 class _Scene
 {
@@ -70,7 +71,7 @@ class _Scene
         _camera *m_camera;
         //_Button *m_playButton;
         _AnimatedModel *m_player_blueprint;
-        _ModelInstance *m_player;
+        _Player *m_player;
 
         _StaticModel *m_humanBlueprint;
         _StaticModelInstance *m_humanInstance;
@@ -79,6 +80,7 @@ class _Scene
         SceneState m_sceneState = SceneState::MainMenu;
 
         void draw2DOverlay();
+        void handleMouseMovement(HWND hWnd, LPARAM lParam);
 };
 
 #endif // _SCENE_H

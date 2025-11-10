@@ -43,6 +43,8 @@ _Scene::~_Scene()
 
     delete m_humanBlueprint;
     delete m_humanInstance;
+
+    delete m_player;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -174,7 +176,8 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     {
         case WM_KEYDOWN:
             m_inputs->wParam = wParam;
-            m_inputs->keyPressed(m_camera);
+            //m_inputs->keyPressed(m_camera);
+            m_player->HandleKeys(wParam);
             break;
         case WM_KEYUP:
 
@@ -200,7 +203,9 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
             break;
 
         case WM_MOUSEMOVE:
-            m_camera->handleMouse(hWnd, LOWORD(lParam), HIWORD(lParam), width / 2, height / 2);
+            //m_camera->handleMouse(hWnd, LOWORD(lParam), HIWORD(lParam), width / 2, height / 2);
+            //m_player->HandleMouse(m_camera->deltas.x, m_camera->deltas.y);
+            handleMouseMovement(hWnd, lParam);
             break;
         case WM_MOUSEWHEEL:
 
@@ -246,15 +251,42 @@ void _Scene::initGameplay()
 {
     terrainBlueprint->LoadModel("models/terrain.obj","models/Terrain_Tex.png");
     terrainInstance->pos = Vector3(0,-1,-5);
-    terrainInstance->scale = Vector3(15,15,15);
+    terrainInstance->scale = Vector3(50,50,50);
     terrainInstance->SetPushable(true);
     terrainInstance->SetRotatable(true);
 
-    Vector3 terrainMin = Vector3(-1, -.25,-1);
+    Vector3 terrainMin = Vector3(-1, -.30,-1);
     // the y -0.8f means that it's 80% from the center towards the bottom (-1.0f)
     // note that it must always be between -1.0f & 1.0f
-    Vector3 terrainMax = Vector3(1, -.2, 1);
-    terrainInstance->AddCollider(new _CubeHitbox(terrainMin, terrainMax));
+    Vector3 terrainMax = Vector3(1, -.25, 1);
+    terrainInstance->AddCollider(new _CubeHitbox(terrainMin, terrainMax, COLLIDER_FLOOR));
+
+    // ----- TERRAIN WALL COLLIDERS -----
+
+    // Define a tall height for the walls in model space
+    float wallMinY = -1.0f;
+    float wallMaxY = 10.0f;
+    float thickness = 0.1f; // Model-space thickness
+
+    // wall 1 far Z - just beyond the +1.0 z-edge
+    Vector3 wallNorthMin = Vector3(-1.0f, wallMinY, 1.0f);
+    Vector3 wallNorthMax = Vector3(1.0f, wallMaxY, 1.0f + thickness);
+    terrainInstance->AddCollider(new _CubeHitbox(wallNorthMin, wallNorthMax, COLLIDER_WALL));
+
+    // wall 2 naer z - just beyond the -1.0 z-edge
+    Vector3 wallSouthMin = Vector3(-1.0f, wallMinY, -1.0f - thickness);
+    Vector3 wallSouthMax = Vector3(1.0f, wallMaxY, -1.0f);
+    terrainInstance->AddCollider(new _CubeHitbox(wallSouthMin, wallSouthMax, COLLIDER_WALL));
+
+    // wall 3 right x  - just beyond the +1.0 x-edge
+    Vector3 wallEastMin = Vector3(1.0f, wallMinY, -1.0f);
+    Vector3 wallEastMax = Vector3(1.0f + thickness, wallMaxY, 1.0f);
+    terrainInstance->AddCollider(new _CubeHitbox(wallEastMin, wallEastMax, COLLIDER_WALL));
+
+    // wall 4 left x - just beyond the -1.0 x-edge
+    Vector3 wallWestMin = Vector3(-1.0f - thickness, wallMinY, -1.0f);
+    Vector3 wallWestMax = Vector3(-1.0f, wallMaxY, 1.0f);
+    terrainInstance->AddCollider(new _CubeHitbox(wallWestMin, wallWestMax, COLLIDER_WALL));
 
     m_camera->camInit();
 
@@ -268,11 +300,12 @@ void _Scene::initGameplay()
 
     m_player_blueprint->LoadAnimation("models/player/idle",2,"models/player/Human_Atlas.png");
 
-    m_player = new _ModelInstance(m_player_blueprint);
+    m_player = new _Player(m_player_blueprint);
+    m_player->RegisterStaticCollider(terrainInstance);
 
     // add sphere collider centered at (0,0,0) local space & r=1.0
     // note: model is norm -1 to +1
-    m_player->AddCollider(new _SphereHitbox(Vector3(0,0,0),1.0f));
+    //m_player->AddCollider(new _SphereHitbox(Vector3(0,0,0),1.0f));
 
     m_humanBlueprint->LoadModel("models/player/idle_01.obj","models/player/Human_Atlas.png");
 }
@@ -313,25 +346,10 @@ void _Scene::drawGameplay()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE); // reenable culling for 3D
 
-    // ---- PLAYER PHYSICS ----
+    m_player->UpdatePhysics();
 
-    // assume player's in air start of every frame
-    m_player->isGrounded=false;
-
-    //check for collisions (against terrain in this case)
-    if(m_player->CheckCollision(terrainInstance)){
-        // collision detected
-        m_player->isGrounded=true;
-
-        // stop downward velocity
-        if(m_player->velocity.y < 0){
-            m_player->velocity.y = 0;
-        }
-        // TODO: could also add code to push player back up
-        // in the event they sunk into floor
-    }
-
-    m_player->Update();
+    // update cam set eye/des/up based on player
+    m_player->UpdateCamera(m_camera);
 
     m_camera->setUpCamera();
     // stop writing to the depth buffer
@@ -378,3 +396,27 @@ void _Scene::drawHelpScreen()
     glMatrixMode(GL_MODELVIEW);
 }
 
+void _Scene::handleMouseMovement(HWND hWnd, LPARAM lParam)
+{
+    int mouseX = LOWORD(lParam);
+    int mouseY = HIWORD(lParam);
+    int centerX = width / 2;
+    int centerY = height / 2;
+
+    // if the mouse is at the center, ignore this "fake" event
+    if (mouseX == centerX && mouseY == centerY) {
+        return;
+    }
+
+    // calc delta from the center
+    float deltaX = (float)(mouseX - centerX);
+    float deltaY = (float)(mouseY - centerY);
+
+    // Send deltas directly to the player
+    m_player->HandleMouse(deltaX, deltaY);
+
+    // reset mouse to center
+    POINT centerPoint = { centerX, centerY };
+    ClientToScreen(hWnd, &centerPoint);
+    SetCursorPos(centerPoint.x, centerPoint.y);
+}
