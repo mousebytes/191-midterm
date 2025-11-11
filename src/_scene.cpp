@@ -25,6 +25,9 @@ _Scene::_Scene()
 
     m_targetBlueprint = new _AnimatedModel();
     m_targetManager = nullptr;
+
+    m_gunBlueprint = new _StaticModel;
+    m_gunInstance = new _StaticModelInstance(m_gunBlueprint);
 }
 
 _Scene::~_Scene()
@@ -52,6 +55,9 @@ _Scene::~_Scene()
 
     delete m_targetBlueprint;
     delete m_targetManager;
+
+    delete m_gunBlueprint;
+    delete m_gunInstance;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -335,6 +341,9 @@ void _Scene::initGameplay()
 
     m_targetManager->RegisterBulletManager(m_bulletManager);
     m_targetManager->RegisterStaticCollider(terrainInstance);
+
+    m_gunBlueprint->LoadModel("models/gun/gun.obj","models/gun/AK_ATLAS.png");
+
 }
 
 void _Scene::initMainMenu()
@@ -391,10 +400,39 @@ void _Scene::drawGameplay()
     terrainInstance->Draw();
 
     m_player->Draw();
-
+    
+    // gun drawing
+    m_gunInstance->pos = Vector3(m_player->m_body->pos.x,m_player->m_body->pos.y+1.2f,m_player->m_body->pos.z);
+    m_gunInstance->scale= Vector3(0.7f,0.7f,0.7f);
+    m_gunInstance->rotation = Vector3(m_camera->rotAngle.y, m_camera->rotAngle.x, 0);
+    //glDisable(GL_CULL_FACE);
+    //m_gunInstance->Draw();
+    //glEnable(GL_CULL_FACE);
+    
     //m_bulletInstance->Draw();
     m_bulletManager->Draw();
     m_targetManager->Draw();
+
+    // after this point render ON TOP of the 3D world
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    // reset the viewport to the origin
+    // we are no longer in the 3D world, we are at (0,0,0)
+    // looking down the Z-axis.
+    glLoadIdentity();
+
+    // move the gun to its static position on the screen
+    // X = Left/Right, Y = Up/Down, Z = Forward/Backward
+    glTranslatef(0.3f, -0.2f, -0.7f);
+
+    // 5. Scale the gun to the right size
+    // You will also need to TWEAK this!
+    glScalef(0.7f, 0.7f, 0.7f);
+
+    glDisable(GL_CULL_FACE);
+    m_gunBlueprint->Draw();
+    glEnable(GL_CULL_FACE);
+   
 }
 
 void _Scene::drawMainMenu()

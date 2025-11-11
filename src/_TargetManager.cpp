@@ -105,12 +105,8 @@ void _TargetManager::UpdateTargetPhysics(_Target* target)
 
 void _TargetManager::Update(){
     // spawn logic
-    //m_spawnTimer-=_Time::deltaTime;
     // only tick the timer if the target list is empty
     // can remove this outer if loop
-    cout <<'\n'<< m_activeTargets.size();
-    cout << "\n??: " << m_activeTargets.empty();
-    cout << "\nt:" << m_spawnTimer;
     if (m_activeTargets.empty())
     {
         m_spawnTimer -= _Time::deltaTime;

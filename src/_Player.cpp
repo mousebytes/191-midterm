@@ -209,10 +209,10 @@ void _Player::UpdatePhysics()
     // ---- ANIMATION STATE SELECTION ----
     if (!m_body->isGrounded) {
         // m_body->PlayAnimation("jump", 1.0f); 
-        m_body->PlayAnimation("idle", 1.0f); // Fallback to idle
+        m_body->PlayAnimation("idle", 1.0f); 
     } else if (abs(m_body->velocity.x) > 0.01f || abs(m_body->velocity.z) > 0.01f) {
         // m_body->PlayAnimation("run", 1.0f);
-        m_body->PlayAnimation("idle", 1.0f); // Fallback to idle
+        m_body->PlayAnimation("idle", 1.0f); 
     } else {
         // player is on the ground and not moving
         m_body->PlayAnimation("idle", 1.0f);

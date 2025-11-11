@@ -80,6 +80,9 @@ class _Scene
         _AnimatedModel* m_targetBlueprint;
         _TargetManager* m_targetManager;
 
+        _StaticModel* m_gunBlueprint;
+        _StaticModelInstance* m_gunInstance;
+
         enum SceneState {MainMenu, Help, Playing, Paused};
         SceneState m_sceneState = SceneState::MainMenu;
 
