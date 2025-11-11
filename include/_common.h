@@ -17,6 +17,7 @@
 
 #include<fstream>
 #include<vector>
+#include<list>
 #include <sstream>
 #include <limits>
 #include<algorithm>
@@ -73,6 +74,15 @@ struct Vector3{
 
     Vector3 operator/(float scalar){
         return Vector3(x/scalar, y/scalar, z/scalar);
+    }
+
+    void normalize() {
+        float length = sqrt(x*x + y*y + z*z);
+        if (length > 0.0f) { // avoid divide by zero
+            x /= length;
+            y /= length;
+            z /= length;
+        }
     }
 
 };

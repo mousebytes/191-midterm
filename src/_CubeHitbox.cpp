@@ -1,7 +1,7 @@
 #include"_CubeHitbox.h"
 #include"_SphereHitbox.h"
 
-bool isDebug = false;
+bool isDebug = true;
 bool drawTopFace = true;
 
 _CubeHitbox::_CubeHitbox(Vector3 vMin, Vector3 vMax, ColliderType type) {

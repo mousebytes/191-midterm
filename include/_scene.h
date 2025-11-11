@@ -22,6 +22,7 @@
 #include"_SphereHitbox.h"
 #include"_AnimatedModelInstance.h"
 #include"_Player.h"
+#include"_Bullets.h"
 
 class _Scene
 {
@@ -72,7 +73,8 @@ class _Scene
         _Player *m_player;
 
         _StaticModel *m_bulletBlueprint;
-        _StaticModelInstance *m_bulletInstance;
+        //_StaticModelInstance *m_bulletInstance;
+        _Bullets *m_bulletManager;
 
         enum SceneState {MainMenu, Help, Playing, Paused};
         SceneState m_sceneState = SceneState::MainMenu;

@@ -20,7 +20,8 @@ _Scene::_Scene()
 
 
     m_bulletBlueprint = new _StaticModel();
-    m_bulletInstance = new _StaticModelInstance(m_bulletBlueprint);
+    //m_bulletInstance = new _StaticModelInstance(m_bulletBlueprint);
+    m_bulletManager = nullptr;
 }
 
 _Scene::~_Scene()
@@ -40,10 +41,12 @@ _Scene::~_Scene()
 
     delete m_skybox;
 
+    delete m_player_blueprint;
     delete m_player;
 
+    delete m_bulletManager;
+    delete m_bulletBlueprint;
 
-    delete m_player;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -185,8 +188,15 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         break;
 
         case WM_LBUTTONDOWN:
-             mouseMapping(LOWORD(lParam), HIWORD(lParam));
-
+            mouseMapping(LOWORD(lParam), HIWORD(lParam));
+            // need to create local scope with {}
+            {
+                // fire from the camera's eye, in the camera's look direction
+                Vector3 startPos = m_camera->eye;
+                Vector3 direction = m_camera->des - m_camera->eye;
+                m_bulletManager->Fire(startPos, direction);
+             }
+            
             break;
 
         case WM_RBUTTONDOWN:
@@ -308,7 +318,8 @@ void _Scene::initGameplay()
     //m_player->AddCollider(new _SphereHitbox(Vector3(0,0,0),1.0f));
 
     m_bulletBlueprint->LoadModel("models/bullet/untitled.obj","models/bullet/BulletAtlas.png");
-    m_bulletInstance->scale = Vector3(0.2,0.2,0.2);
+    //m_bulletInstance->scale = Vector3(0.2,0.2,0.2);
+    m_bulletManager = new _Bullets(m_bulletBlueprint);
 }
 
 void _Scene::initMainMenu()
@@ -348,6 +359,7 @@ void _Scene::drawGameplay()
     glEnable(GL_CULL_FACE); // reenable culling for 3D
 
     m_player->UpdatePhysics();
+    m_bulletManager->Update();
 
     // update cam set eye/des/up based on player
     m_player->UpdateCamera(m_camera);
@@ -364,7 +376,8 @@ void _Scene::drawGameplay()
 
     m_player->Draw();
 
-    m_bulletInstance->Draw();
+    //m_bulletInstance->Draw();
+    m_bulletManager->Draw();
 }
 
 void _Scene::drawMainMenu()

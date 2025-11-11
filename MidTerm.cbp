@@ -49,6 +49,7 @@
 		<Unit filename="include/_3dmodelloader.h" />
 		<Unit filename="include/_AnimatedModel.h" />
 		<Unit filename="include/_AnimatedModelInstance.h" />
+		<Unit filename="include/_Bullets.h" />
 		<Unit filename="include/_Button.h" />
 		<Unit filename="include/_Collider.h" />
 		<Unit filename="include/_CubeHitbox.h" />
@@ -59,7 +60,6 @@
 		<Unit filename="include/_StaticModel.h" />
 		<Unit filename="include/_StaticModelInstance.h" />
 		<Unit filename="include/_Time.h" />
-		<Unit filename="include/_bullets.h" />
 		<Unit filename="include/_camera.h" />
 		<Unit filename="include/_collisioncheck.h" />
 		<Unit filename="include/_common.h" />
@@ -76,6 +76,7 @@
 		<Unit filename="src/_3dmodelloader.cpp" />
 		<Unit filename="src/_AnimatedModel.cpp" />
 		<Unit filename="src/_AnimatedModelInstance.cpp" />
+		<Unit filename="src/_Bullets.cpp" />
 		<Unit filename="src/_Button.cpp" />
 		<Unit filename="src/_CubeHitbox.cpp" />
 		<Unit filename="src/_Hitbox.cpp" />
@@ -85,7 +86,6 @@
 		<Unit filename="src/_StaticModel.cpp" />
 		<Unit filename="src/_StaticModelInstance.cpp" />
 		<Unit filename="src/_Time.cpp" />
-		<Unit filename="src/_bullets.cpp" />
 		<Unit filename="src/_camera.cpp" />
 		<Unit filename="src/_collisioncheck.cpp" />
 		<Unit filename="src/_inputs.cpp" />
