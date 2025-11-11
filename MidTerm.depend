@@ -7,7 +7,7 @@
 	<gl/gl.h>
 	<_scene.h>
 
-1762642581 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
+1762826863 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
 	<_common.h>
 	<_light.h>
 	<_model.h>
@@ -19,12 +19,18 @@
 	<_timer.h>
 	<_3dmodelloader.h>
 	<_camera.h>
-	<_bullets.h>
 	<_collisioncheck.h>
 	"_StaticModelInstance.h"
 	"_inputs.h"
+	"_Button.h"
+	"_skybox.h"
+	"_Collider.h"
+	"_CubeHitbox.h"
+	"_SphereHitbox.h"
+	"_AnimatedModelInstance.h"
+	"_Player.h"
 
-1762572022 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
+1762761523 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
 	<iostream>
 	<windows.h>
 	<string>
@@ -38,6 +44,8 @@
 	<vector>
 	<sstream>
 	<limits>
+	<algorithm>
+	<cmath>
 	"_Time.h"
 
 1756492088 c:\users\amora\desktop\fresno state stuff\csci 191\common\include\gl\glut.h
@@ -84,7 +92,7 @@
 	<_common.h>
 	<_textureloader.h>
 
-1762643540 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_camera.h
+1762821709 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_camera.h
 	<_common.h>
 
 1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_3dmodelloader.h
@@ -108,13 +116,13 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_bullets.cpp
 	"_bullets.h"
 
-1762643692 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_camera.cpp
+1762822023 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_camera.cpp
 	"_camera.h"
 
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_collisioncheck.cpp
 	"_collisioncheck.h"
 
-1762642751 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_inputs.cpp
+1762821990 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_inputs.cpp
 	"_inputs.h"
 
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_light.cpp
@@ -126,24 +134,25 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_parallax.cpp
 	"_parallax.h"
 
-1762643380 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
+1762822206 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
 	"_scene.h"
 
-1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
+1762771774 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
 	"_skybox.h"
 
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_sprite.cpp
 	"_sprite.h"
 
-1762582681 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_textureloader.cpp
+1762680089 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_textureloader.cpp
 	"_textureloader.h"
 
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_timer.cpp
 	"_timer.h"
 
-1762642195 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_staticmodelinstance.h
+1762691524 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_staticmodelinstance.h
 	"_StaticModel.h"
 	"_common.h"
+	"_Collider.h"
 
 1762572082 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_staticmodel.h
 	<_common.h>
@@ -160,7 +169,7 @@
 1762581033 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_objmodel.cpp
 	"_ObjModel.h"
 
-1762642238 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_staticmodelinstance.cpp
+1762691767 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_staticmodelinstance.cpp
 	"_StaticModelInstance.h"
 
 1762222984 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_time.cpp
@@ -168,4 +177,73 @@
 
 1762638705 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_staticmodel.cpp
 	"_StaticModel.h"
+
+1762826857 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_collider.h
+	"_common.h"
+
+1762683111 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_button.h
+	"_common.h"
+	"_textureloader.h"
+
+1762772562 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_cubehitbox.h
+	"_Collider.h"
+
+1762772807 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_spherehitbox.h
+	"_Collider.h"
+
+1762763087 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_modelinstance.h
+	<_common.h>
+	"_AnimatedModel.h"
+	"_Collider.h"
+	"_StaticModelInstance.h"
+	"_CubeHitbox.h"
+	"_SphereHitbox.h"
+
+1762735458 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodel.h
+	<_common.h>
+	"_ObjModel.h"
+
+1762735454 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_animatedmodel.cpp
+	"_AnimatedModel.h"
+
+1762684664 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_button.cpp
+	"_Button.h"
+
+1762822404 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_cubehitbox.cpp
+	"_CubeHitbox.h"
+	"_SphereHitbox.h"
+
+1762692527 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_hitbox.cpp
+	"_Hitbox.h"
+
+1762688775 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_hitbox.h
+	"_common.h"
+
+1762773107 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_spherehitbox.cpp
+	"_SphereHitbox.h"
+	"_CubeHitbox.h"
+
+1762763087 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_modelinstance.cpp
+	"_ModelInstance.h"
+
+1762774273 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_animatedmodelinstance.cpp
+	"_AnimatedModelInstance.h"
+
+1762774230 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodelinstance.h
+	<_common.h>
+	"_AnimatedModel.h"
+	"_Collider.h"
+	"_StaticModelInstance.h"
+	"_CubeHitbox.h"
+	"_SphereHitbox.h"
+
+1762827080 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_player.h
+	"_camera.h"
+	"_inputs.h"
+	"_common.h"
+	"_AnimatedModelInstance.h"
+	"_StaticModelInstance.h"
+
+1762821805 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_player.cpp
+	"_Player.h"
 
