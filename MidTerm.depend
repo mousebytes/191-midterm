@@ -7,7 +7,7 @@
 	<gl/gl.h>
 	<_scene.h>
 
-1762828607 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
+1762857440 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
 	<_common.h>
 	<_light.h>
 	<_model.h>
@@ -30,6 +30,7 @@
 	"_AnimatedModelInstance.h"
 	"_Player.h"
 	"_Bullets.h"
+	"_TargetManager.h"
 
 1762828971 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
 	<iostream>
@@ -104,9 +105,12 @@
 
 1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\anorms.h
 
-1762851645 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_bullets.h
+1762856194 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_bullets.h
 	"_common.h"
 	"_StaticModelInstance.h"
+	"_AnimatedModelInstance.h"
+	"_SphereHitbox.h"
+	"_CubeHitbox.h"
 
 1762563177 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_collisioncheck.h
 	<_common.h>
@@ -114,7 +118,7 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_3dmodelloader.cpp
 	"_3dmodelloader.h"
 
-1762853267 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_bullets.cpp
+1762856523 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_bullets.cpp
 	"_Bullets.h"
 
 1762822023 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_camera.cpp
@@ -135,7 +139,7 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_parallax.cpp
 	"_parallax.h"
 
-1762851621 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
+1762859029 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
 	"_scene.h"
 
 1762771774 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
@@ -179,7 +183,7 @@
 1762638705 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_staticmodel.cpp
 	"_StaticModel.h"
 
-1762826857 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_collider.h
+1762854492 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_collider.h
 	"_common.h"
 
 1762683111 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_button.h
@@ -227,10 +231,10 @@
 1762763087 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_modelinstance.cpp
 	"_ModelInstance.h"
 
-1762774273 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_animatedmodelinstance.cpp
+1762859851 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_animatedmodelinstance.cpp
 	"_AnimatedModelInstance.h"
 
-1762774230 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodelinstance.h
+1762858168 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodelinstance.h
 	<_common.h>
 	"_AnimatedModel.h"
 	"_Collider.h"
@@ -247,4 +251,14 @@
 
 1762827445 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_player.cpp
 	"_Player.h"
+
+1762858827 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_targetmanager.h
+	"_AnimatedModel.h"
+	"_AnimatedModelInstance.h"
+	"_SphereHitbox.h"
+	"_common.h"
+	"_Bullets.h"
+
+1762860371 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_targetmanager.cpp
+	"_TargetManager.h"
 

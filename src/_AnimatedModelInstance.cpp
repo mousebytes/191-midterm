@@ -21,6 +21,9 @@ _AnimatedModelInstance::_AnimatedModelInstance(_AnimatedModel* modelAsset){
     // start in the air
     isGrounded=false;
 
+    // change to 0 for no gravity (duh)
+    gravity = 9.8f;
+    isHit=false;
 }
 
 _AnimatedModelInstance::~_AnimatedModelInstance(){
@@ -39,10 +42,9 @@ void _AnimatedModelInstance::SetAnimation(int start, int end){
 }
 
 void _AnimatedModelInstance::Update(){
-    const float gravity = -9.8f;
 
     if(!isGrounded){
-        velocity.y+=gravity*_Time::deltaTime;
+        velocity.y-=gravity*_Time::deltaTime;
     }
 
     pos.x+=velocity.x*_Time::deltaTime;
@@ -81,7 +83,7 @@ void _AnimatedModelInstance::Draw(){
 
 void _AnimatedModelInstance::Animate(int start, int end, int* frame, float* interp){
     // animation speed (fps)
-    float animSpeed = 10.0f;
+    float animSpeed = 1.0f;
 
     // +interp based on deltaTime
     *interp+=animSpeed*_Time::deltaTime;

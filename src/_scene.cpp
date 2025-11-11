@@ -22,6 +22,9 @@ _Scene::_Scene()
     m_bulletBlueprint = new _StaticModel();
     //m_bulletInstance = new _StaticModelInstance(m_bulletBlueprint);
     m_bulletManager = nullptr;
+
+    m_targetBlueprint = new _AnimatedModel();
+    m_targetManager = nullptr;
 }
 
 _Scene::~_Scene()
@@ -47,6 +50,8 @@ _Scene::~_Scene()
     delete m_bulletManager;
     delete m_bulletBlueprint;
 
+    delete m_targetBlueprint;
+    delete m_targetManager;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -320,6 +325,14 @@ void _Scene::initGameplay()
     m_bulletBlueprint->LoadModel("models/bullet/untitled.obj","models/bullet/BulletAtlas.png");
     //m_bulletInstance->scale = Vector3(0.2,0.2,0.2);
     m_bulletManager = new _Bullets(m_bulletBlueprint);
+
+    // TARGET MANAGER
+    m_targetBlueprint->LoadAnimation("models/player/idle",2,"models/player/Human_Atlas.png");
+
+    m_targetManager = new _TargetManager(m_targetBlueprint);
+
+    m_targetManager->RegisterBulletManager(m_bulletManager);
+    m_targetManager->RegisterStaticCollider(terrainInstance);
 }
 
 void _Scene::initMainMenu()
@@ -360,6 +373,7 @@ void _Scene::drawGameplay()
 
     m_player->UpdatePhysics();
     m_bulletManager->Update();
+    m_targetManager->Update();
 
     // update cam set eye/des/up based on player
     m_player->UpdateCamera(m_camera);
@@ -378,6 +392,7 @@ void _Scene::drawGameplay()
 
     //m_bulletInstance->Draw();
     m_bulletManager->Draw();
+    m_targetManager->Draw();
 }
 
 void _Scene::drawMainMenu()

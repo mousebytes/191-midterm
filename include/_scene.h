@@ -23,6 +23,7 @@
 #include"_AnimatedModelInstance.h"
 #include"_Player.h"
 #include"_Bullets.h"
+#include"_TargetManager.h"
 
 class _Scene
 {
@@ -75,6 +76,9 @@ class _Scene
         _StaticModel *m_bulletBlueprint;
         //_StaticModelInstance *m_bulletInstance;
         _Bullets *m_bulletManager;
+
+        _AnimatedModel* m_targetBlueprint;
+        _TargetManager* m_targetManager;
 
         enum SceneState {MainMenu, Help, Playing, Paused};
         SceneState m_sceneState = SceneState::MainMenu;

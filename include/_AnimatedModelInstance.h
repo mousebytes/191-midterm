@@ -31,7 +31,11 @@ class _AnimatedModelInstance{
         Vector3 scale;
 
         Vector3 velocity;
+        float gravity;
+
         bool isGrounded;
+        bool isHit;
+
 
         vector<_Collider*> colliders;
         void AddCollider(_Collider* collider);
