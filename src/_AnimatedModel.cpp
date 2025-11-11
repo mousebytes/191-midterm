@@ -1,87 +1,115 @@
-#include"_AnimatedModel.h"
+#include "_AnimatedModel.h"
 
-_AnimatedModel::_AnimatedModel(){
-    modelTexID=0;
+_AnimatedModel::_AnimatedModel() {
+    modelTexID = 0;
 }
 
-_AnimatedModel::~_AnimatedModel(){
+_AnimatedModel::~_AnimatedModel() {
     FreeModel();
 }
 
-int _AnimatedModel::GetFrameCount(){
-    return m_Frames.size();
+bool _AnimatedModel::LoadTexture(char* texpath) {
+    cout << "Loading texture: " << texpath << '\n';
+    myTex.loadTexture(texpath);
+    modelTexID = myTex.textID;
+    return modelTexID != 0;
 }
 
-bool _AnimatedModel::LoadAnimation(const char* baseName, int frameCount, char* texpath){
-    for(int i =0;i<frameCount;++i){
-        // build filename (models/sktaer/push_02.obj)
-        std::stringstream ss;
+// gets the frame count for a specific named animation
+int _AnimatedModel::GetFrameCount(string animName) {
+    // check if the animation name exists in our map
+    if (m_Animations.find(animName) == m_Animations.end()) {
+        return 0; // Not found
+    }
+    return m_Animations[animName].size();
+}
+
+// loads an animation from a sequence of OBJs and stores it by name
+bool _AnimatedModel::RegisterAnimation(string name, const char* baseName, int frameCount) {
+    
+    // create a new vector to hold this animation's frames
+    vector<ObjModel*> frames;
+
+    for (int i = 0; i < frameCount; ++i) {
+        // build filename (models/player/idle_00.obj)
+        stringstream ss;
         ss << baseName << "_";
-        if(i<10) ss << "0"; // add leading 0
+        if (i < 10) ss << "0"; // add leading 0
         ss << i << ".obj";
 
-        std::string filename = ss.str();
+        string filename = ss.str();
 
         // create ObjModel & load
         ObjModel* newFrame = new ObjModel();
         newFrame->init(filename);
 
-        if(newFrame->vertices.empty()){
-            std::cerr << "Error: could not load: " << filename << '\n';
+        if (newFrame->vertices.empty()) {
+            cerr << "Error: could not load: " << filename << '\n';
             delete newFrame;
+            // clean up already loaded frames for this animation
+            for (ObjModel* frame : frames) {
+                delete frame;
+            }
             return false;
         }
-        // add loaded frame to the flipbook
-        m_Frames.push_back(newFrame);
+        // add loaded frame to this animation's vector
+        frames.push_back(newFrame);
     }
 
-    // initialize m_ScratchFrame to match the structure of our frames
-    // so we don't reallocate memory every frame
-    if (!m_Frames.empty()) {
-        ObjModel* firstFrame = m_Frames[0];
+    // if this is the first animation being loaded,
+    // initialize the scratch frame structure
+    if (m_Animations.empty() && !frames.empty()) {
+        ObjModel* firstFrame = frames[0];
         m_ScratchFrame.faces = firstFrame->faces;
         m_ScratchFrame.tex_coords = firstFrame->tex_coords;
-        m_ScratchFrame.normals.resize(firstFrame->normals.size()); // preallocate normal vector
-        m_ScratchFrame.vertices.resize(firstFrame->vertices.size()); // preaallocate vertex vector
+        m_ScratchFrame.normals.resize(firstFrame->normals.size());
+        m_ScratchFrame.vertices.resize(firstFrame->vertices.size());
     }
 
-    // load tex
-    // assume all frames share a texture
-    // ex ("models/skater/push.jpg")
-    std::cout << "Loading texture: " << texpath << '\n';
-    myTex.loadTexture(texpath);
-    modelTexID = myTex.textID;
+    // store the newly loaded frame vector in our map
+    m_Animations[name] = frames;
 
     return true;
 }
 
-void _AnimatedModel::FreeModel(){
-    // delete all ObjModel we've created
-    for(ObjModel* frame : m_Frames){
-        delete frame;
+void _AnimatedModel::FreeModel() {
+    for (auto& pair : m_Animations) {
+        // pair.first is the string name (e.g., "idle")
+        // pair.second is the vector<ObjModel*>
+        for (ObjModel* frame : pair.second) {
+            delete frame;
+        }
+        pair.second.clear();
     }
-    // clean vec
-    m_Frames.clear();
+    // clean the map itself
+    m_Animations.clear();
 
     // clean tex
-    glDeleteTextures(1,&modelTexID);
+    glDeleteTextures(1, &modelTexID);
 }
 
-void _AnimatedModel::Draw(int frameA, int frameB, float interp){
-    if(m_Frames.empty() || frameA >= m_Frames.size() || frameB >= m_Frames.size()){
+void _AnimatedModel::Draw(string animName, int frameA, int frameB, float interp) {
+    
+    // find the requested animation in our map
+    if (m_Animations.find(animName) == m_Animations.end()) {
+        return; // this animation doesn't exist
+    }
+
+    vector<ObjModel*>& frames = m_Animations[animName];
+
+    if (frames.empty() || frameA >= frames.size() || frameB >= frames.size()) {
         return;
     }
 
     //get two pages of the flipbook we're gonna blend
-    ObjModel* modelA = m_Frames[frameA];
-    ObjModel* modelB = m_Frames[frameB];
+    ObjModel* modelA = frames[frameA];
+    ObjModel* modelB = frames[frameB];
 
     // check that they match
-    // vert count & face data has to be the same
-    if(modelA->vertices.size() != modelB->vertices.size() || 
-       modelA->normals.size() != modelB->normals.size())
+    if (modelA->vertices.size() != modelB->vertices.size() ||
+        modelA->normals.size() != modelB->normals.size())
     {
-        std::cerr<<"Error: Animation frames do not match\n";
+        cerr << "Error: Animation frames do not match\n";
         return;
     }
 
@@ -89,7 +117,7 @@ void _AnimatedModel::Draw(int frameA, int frameB, float interp){
     // and store them in m_ScratchFrame.
     
     for (size_t i = 0; i < modelA->vertices.size(); ++i) {
-        // Get vert pos from both frames
+        // get vert pos from both frames
         Vector3& posA = modelA->vertices[i];
         Vector3& posB = modelB->vertices[i];
 
@@ -99,7 +127,7 @@ void _AnimatedModel::Draw(int frameA, int frameB, float interp){
         m_ScratchFrame.vertices[i].z = posA.z + (posB.z - posA.z) * interp;
     }
     
-    // Also lerp normals for smooth lighting (as suggested)
+    // also lerp normals for smooth lighting
     for (size_t i = 0; i < modelA->normals.size(); ++i) {
         Vector3 &normA = modelA->normals[i];
         Vector3& normB = modelB->normals[i];

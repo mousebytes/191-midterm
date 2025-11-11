@@ -10,11 +10,11 @@ _AnimatedModelInstance::_AnimatedModelInstance(_AnimatedModel* modelAsset){
     rotation = Vector3();
     scale.x=scale.y=scale.z=1.0f;
 
-    currentFrame=0;
-    interp=0.0;
-    startFrame=0;
-    // set default to full animation
-    endFrame=blueprint->GetFrameCount()-1;
+    m_currentFrame=0;
+    m_interp=0.0f;
+    m_animationSpeed=1.0f;
+    // set default animation to play
+    PlayAnimation("idle",1.0f);
 
     // start with no velocity
     velocity = Vector3(0,0,0);
@@ -32,17 +32,34 @@ _AnimatedModelInstance::~_AnimatedModelInstance(){
     }
     colliders.clear();
 }
+// play animation by name
+void _AnimatedModelInstance::PlayAnimation(string name, float speed){
+    // don't restart animation if it's currently playing
+    if(m_currentAnimationName == name){
+        return;
+    }
 
-void _AnimatedModelInstance::SetAnimation(int start, int end){
-    startFrame = start;
-    endFrame = end;
-    // reset to beginning of new animation
-    currentFrame=start;
-    interp=0.0f;
+    // check if the animation exists before trying to play it
+    if(blueprint->GetFrameCount(name)>0){
+        m_currentAnimationName=name;
+        m_animationSpeed=speed;
+        //reset to beginning of new animation
+        m_currentFrame=0;
+        m_interp=0.0f;
+    }else{
+        // if name doesn't exists, try to play idle
+        if(m_currentAnimationName!="idle" && blueprint->GetFrameCount("idle")>0){
+            m_currentAnimationName="idle";
+            m_animationSpeed=1.0f;
+            m_currentFrame=0;
+            m_interp=0.0f;
+        }
+    }
 }
 
 void _AnimatedModelInstance::Update(){
 
+    // FIZZICS
     if(!isGrounded){
         velocity.y-=gravity*_Time::deltaTime;
     }
@@ -51,7 +68,22 @@ void _AnimatedModelInstance::Update(){
     pos.y+=velocity.y*_Time::deltaTime;
     pos.z+=velocity.z*_Time::deltaTime;
 
-    Animate(startFrame,endFrame,&currentFrame,&interp);
+    // animation
+    int frameCount = blueprint->GetFrameCount(m_currentAnimationName);
+    if(frameCount==0){
+        return; // no animation to play
+    }
+
+    m_interp += m_animationSpeed*_Time::deltaTime;
+
+    if(m_interp>=1.0f){
+        m_interp = fmod(m_interp,1.0f); // wrap interp
+        m_currentFrame++;//next frame
+        
+        if(m_currentFrame >= frameCount){
+            m_currentFrame=0; //loop animation
+        }
+    }
 }
 
 void _AnimatedModelInstance::Draw(){
@@ -64,64 +96,25 @@ void _AnimatedModelInstance::Draw(){
 
         glScalef(scale.x,scale.y,scale.z);
 
-        // calc next frame -- handle wraparound
-        int nextFrame = currentFrame+1;
-        if(nextFrame>endFrame){
-            nextFrame=startFrame; // loop back
-        }
+        
+        int frameCount = blueprint->GetFrameCount(m_currentAnimationName);
+        if(frameCount>0){
+            // calc next frame -- handle wraparound
+            int nextFrame = m_currentFrame + 1;
+            if(nextFrame >= frameCount){
+                nextFrame=0; //loop back
+            }
 
-        blueprint->Draw(
-            currentFrame,
-            nextFrame,
-            interp
-        );
+            blueprint->Draw(
+                m_currentAnimationName,
+                m_currentFrame,
+                nextFrame,
+                m_interp
+            );
+        }
 
         DrawColliders();
-
     glPopMatrix();
-}
-
-void _AnimatedModelInstance::Animate(int start, int end, int* frame, float* interp){
-    // animation speed (fps)
-    float animSpeed = 1.0f;
-
-    // +interp based on deltaTime
-    *interp+=animSpeed*_Time::deltaTime;
-
-    // check if interp is done
-    if(*interp>=1.0f){
-        // reset interp
-        *interp = fmod(*interp, 1.0f);
-
-        // next frame
-        (*frame)++;
-
-        // loop anim if passed end frame
-        if(*frame>end){
-            *frame=start;
-        }
-    }
-}
-
-void _AnimatedModelInstance::Actions()
-{
-    // Check the trigger and set the correct animation
-    switch(actionTrigger)
-    {
-        case STAND:
-            SetAnimation(0, 1); // "stand" animation frames
-            break;
-        case RUN:
-            SetAnimation(40, 45); // "run" animation frames
-            break;
-        case ATTACK:
-            SetAnimation(46, 53); // "attack" animation frames
-            break;
-        case JUMP:
-            SetAnimation(66, 71); // "jump" animation frames
-            break;
-        // add other cases like WALKLEFT etc
-    }
 }
 
 void _AnimatedModelInstance::AddCollider(_Collider* collider) {

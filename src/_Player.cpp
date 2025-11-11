@@ -206,6 +206,18 @@ void _Player::UpdatePhysics()
     // and movement velocity (now corrected for walls)
     m_body->Update();
 
+    // ---- ANIMATION STATE SELECTION ----
+    if (!m_body->isGrounded) {
+        // m_body->PlayAnimation("jump", 1.0f); 
+        m_body->PlayAnimation("idle", 1.0f); // Fallback to idle
+    } else if (abs(m_body->velocity.x) > 0.01f || abs(m_body->velocity.z) > 0.01f) {
+        // m_body->PlayAnimation("run", 1.0f);
+        m_body->PlayAnimation("idle", 1.0f); // Fallback to idle
+    } else {
+        // player is on the ground and not moving
+        m_body->PlayAnimation("idle", 1.0f);
+    }
+
     // reset horz velocity so the player stops when
     // no keys are pressed *next frame*
     m_body->velocity.x = 0;

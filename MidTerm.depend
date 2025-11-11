@@ -32,7 +32,7 @@
 	"_Bullets.h"
 	"_TargetManager.h"
 
-1762828971 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
+1762860833 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
 	<iostream>
 	<windows.h>
 	<string>
@@ -49,6 +49,7 @@
 	<limits>
 	<algorithm>
 	<cmath>
+	<map>
 	"_Time.h"
 
 1756492088 c:\users\amora\desktop\fresno state stuff\csci 191\common\include\gl\glut.h
@@ -204,7 +205,7 @@
 	"_CubeHitbox.h"
 	"_SphereHitbox.h"
 
-1762735458 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodel.h
+1762861035 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodel.h
 	<_common.h>
 	"_ObjModel.h"
 
@@ -234,7 +235,7 @@
 1762859851 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_animatedmodelinstance.cpp
 	"_AnimatedModelInstance.h"
 
-1762858168 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodelinstance.h
+1762862144 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_animatedmodelinstance.h
 	<_common.h>
 	"_AnimatedModel.h"
 	"_Collider.h"

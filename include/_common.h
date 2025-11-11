@@ -22,6 +22,7 @@
 #include <limits>
 #include<algorithm>
 #include<cmath>
+#include<map>
 
 #include"_Time.h"
 

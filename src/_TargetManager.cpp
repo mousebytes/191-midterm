@@ -42,6 +42,9 @@ void _TargetManager::SpawnTarget(){
     //custom gravity factor
     newInstance->gravity = 1.0f;
 
+    // tell target to play default animation
+    newInstance->PlayAnimation("idle", 1.0f);
+
     _Target* newTarget = new _Target(newInstance,m_targetLifetime);
 
     m_activeTargets.push_back(newTarget);

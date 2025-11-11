@@ -20,8 +20,7 @@ class _AnimatedModelInstance{
         // translation/rotation/drawing
         void Draw();
 
-        void SetAnimation(int start,int end);
-        void Actions(); 
+        void PlayAnimation(string name, float speed = 1.0f);
 
         enum { STAND, WALKLEFT, WALKRIGHT, RUN, JUMP, ATTACK };
         int actionTrigger;
@@ -47,12 +46,11 @@ class _AnimatedModelInstance{
     //_MD2Model* blueprint;
     _AnimatedModel* blueprint;
 
-    int currentFrame;
-    float interp;
-    int startFrame;
-    int endFrame;
+    string m_currentAnimationName;
+    int m_currentFrame;
+    float m_interp;
+    float m_animationSpeed;
 
-    void Animate(int start, int end, int* frame, float* interp);
     protected:
 };
 
