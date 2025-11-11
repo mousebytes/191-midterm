@@ -21,6 +21,8 @@ class _camera
 
         Vector2 deltas;
 
+        bool isFreeCam;
+
         enum{FORWARD,BACKWARD,LEFT,RIGHT};
 
         void camInit(); //initilize the camera

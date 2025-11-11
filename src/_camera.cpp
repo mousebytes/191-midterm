@@ -3,6 +3,7 @@
 _camera::_camera()
 {
     //ctor
+    isFreeCam=false;
 }
 
 _camera::~_camera()
@@ -55,27 +56,27 @@ void _camera::rotateUP()
 
 void _camera::camMoveFdBd(int dir)
 {
-       float moveStep = step * _Time::deltaTime;
-       
-       // calc the "forward" direction vector on the XZ plane
-       // this is based on the camera's yaw (rotAngle.x)
-       // (des - eye) gives the forward vector
-       float fwdX = -sin(rotAngle.x * PI / 180.0);
-       float fwdZ = -cos(rotAngle.x * PI / 180.0);
-
-       // 1 for forward (W) and -1 for backwards (S)
-       float moveAmount = moveStep * dir;
-
-       // apply movement
-       eye.x += fwdX * moveAmount;
-       eye.z += fwdZ * moveAmount;
-
-       des.x += fwdX * moveAmount;
-       des.z += fwdZ * moveAmount;
+    if(!isFreeCam) return;
+    float moveStep = step * _Time::deltaTime;
+    
+    // calc the "forward" direction vector on the XZ plane
+    // this is based on the camera's yaw (rotAngle.x)
+    // (des - eye) gives the forward vector
+    float fwdX = -sin(rotAngle.x * PI / 180.0);
+    float fwdZ = -cos(rotAngle.x * PI / 180.0);
+    // 1 for forward (W) and -1 for backwards (S)
+    float moveAmount = moveStep * dir;
+    // apply movement
+    eye.x += fwdX * moveAmount;
+    eye.z += fwdZ * moveAmount;
+    des.x += fwdX * moveAmount;
+    des.z += fwdZ * moveAmount;
 }
 
 void _camera::camMoveLtRt(int dir)
 {
+    if(!isFreeCam) return;
+
     float moveStep = step * _Time::deltaTime;
 
     // calc the "right" direction vector (strafe)
@@ -101,7 +102,6 @@ void _camera::setUpCamera()
               up.x, up.y, up.z);
 }
 
-// deprecated
 void _camera::handleMouse(HWND hWnd, int mouseX, int mouseY, int centerX, int centerY){
     // if the mouse is at the center it's because we just set it
     // in the last frame, ignore this "fake" event

@@ -188,7 +188,8 @@ void _inputs::keyPressed(_camera* cm)
              cm->rotateXY();
         break;
      case 32:   // space bar
-            cm->camReset();
+            //cm->camReset();
+            cm->isFreeCam = !cm->isFreeCam;
         break;
      }
 }

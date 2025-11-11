@@ -12,7 +12,6 @@
 #include<_timer.h>
 #include<_3dmodelloader.h>
 #include<_camera.h>
-#include<_bullets.h>
 #include<_collisioncheck.h>
 #include"_StaticModelInstance.h"
 #include"_inputs.h"
@@ -69,12 +68,11 @@ class _Scene
 
         _inputs *m_inputs;
         _camera *m_camera;
-        //_Button *m_playButton;
         _AnimatedModel *m_player_blueprint;
         _Player *m_player;
 
-        _StaticModel *m_humanBlueprint;
-        _StaticModelInstance *m_humanInstance;
+        _StaticModel *m_bulletBlueprint;
+        _StaticModelInstance *m_bulletInstance;
 
         enum SceneState {MainMenu, Help, Playing, Paused};
         SceneState m_sceneState = SceneState::MainMenu;

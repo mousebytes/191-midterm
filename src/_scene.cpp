@@ -18,8 +18,9 @@ _Scene::_Scene()
 
     m_player_blueprint = new _AnimatedModel();
 
-    m_humanBlueprint = new _StaticModel();
-    m_humanInstance = new _StaticModelInstance(m_humanBlueprint);
+
+    m_bulletBlueprint = new _StaticModel();
+    m_bulletInstance = new _StaticModelInstance(m_bulletBlueprint);
 }
 
 _Scene::~_Scene()
@@ -41,8 +42,6 @@ _Scene::~_Scene()
 
     delete m_player;
 
-    delete m_humanBlueprint;
-    delete m_humanInstance;
 
     delete m_player;
 }
@@ -176,7 +175,9 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     {
         case WM_KEYDOWN:
             m_inputs->wParam = wParam;
-            //m_inputs->keyPressed(m_camera);
+            // for free cam
+            m_inputs->keyPressed(m_camera);
+            // for player movement & doing eye cam stuff
             m_player->HandleKeys(wParam);
             break;
         case WM_KEYUP:
@@ -203,8 +204,7 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
             break;
 
         case WM_MOUSEMOVE:
-            //m_camera->handleMouse(hWnd, LOWORD(lParam), HIWORD(lParam), width / 2, height / 2);
-            //m_player->HandleMouse(m_camera->deltas.x, m_camera->deltas.y);
+            if(m_camera->isFreeCam) m_camera->handleMouse(hWnd, LOWORD(lParam), HIWORD(lParam), width / 2, height / 2);
             handleMouseMovement(hWnd, lParam);
             break;
         case WM_MOUSEWHEEL:
@@ -307,7 +307,8 @@ void _Scene::initGameplay()
     // note: model is norm -1 to +1
     //m_player->AddCollider(new _SphereHitbox(Vector3(0,0,0),1.0f));
 
-    m_humanBlueprint->LoadModel("models/player/idle_01.obj","models/player/Human_Atlas.png");
+    m_bulletBlueprint->LoadModel("models/bullet/untitled.obj","models/bullet/BulletAtlas.png");
+    m_bulletInstance->scale = Vector3(0.2,0.2,0.2);
 }
 
 void _Scene::initMainMenu()
@@ -359,13 +360,11 @@ void _Scene::drawGameplay()
     // start writing to the depth buffer again
     glDepthMask(GL_TRUE);
 
-    m_humanInstance->Draw();
-
     terrainInstance->Draw();
 
     m_player->Draw();
 
-
+    m_bulletInstance->Draw();
 }
 
 void _Scene::drawMainMenu()

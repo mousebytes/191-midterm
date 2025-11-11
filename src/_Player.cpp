@@ -17,6 +17,8 @@ _Player::_Player(_AnimatedModel* modelBlueprint)
     m_playerYaw = 0.0f;
     m_moveSpeed = 30.0f;
     m_mouseSensitivity = 0.1f;
+
+    isFrozen = false;
 }
 
 _Player::~_Player()
@@ -26,6 +28,7 @@ _Player::~_Player()
 
 void _Player::HandleMouse(float deltaX, float deltaY)
 {
+    if(isFrozen) return;
     // apply mouse movement to our brain's rotations
     m_playerYaw -= deltaX * m_mouseSensitivity;
     m_cameraPitch -= deltaY * m_mouseSensitivity;
@@ -45,6 +48,7 @@ void _Player::HandleMouse(float deltaX, float deltaY)
 
 void _Player::HandleKeys(WPARAM wParam)
 {
+    
     // calculate forward and right vectors based on player's yaw
     Vector3 fwd;
     fwd.x = -sin(m_playerYaw * PI / 180.0);
@@ -86,7 +90,7 @@ void _Player::ClearColliders()
 
 void _Player::UpdatePhysics()
 {
-
+    if(isFrozen) return;
     // --- Wall Collision & Sliding Logic ---
     // We check for wall collisions before checking for ground
     // we must assume m_body has colliders, pos, scale, and rotation
@@ -210,6 +214,10 @@ void _Player::UpdatePhysics()
 
 void _Player::UpdateCamera(_camera* cam)
 {
+    // don't force the cam into pos if it's in free cam
+    if(cam->isFreeCam) {isFrozen=true; return;}
+    else {isFrozen=false;}
+
     // how high the eyes are above the model's origin
     float eyeHeight = 1.5f; 
     

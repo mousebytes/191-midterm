@@ -23,6 +23,8 @@ class _Player{
     vector<_StaticModelInstance*> m_collidableStaticModels;
     vector<_AnimatedModelInstance*> m_collidableAnimatedModels;
 
+    bool isFrozen;
+
     // takes raw input deltas
     void HandleMouse(float deltaX, float deltaY);
 
