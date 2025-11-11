@@ -29,8 +29,9 @@ void _StaticModelInstance::Draw() {
         // apply this instance's transform
         glTranslatef(pos.x, pos.y, pos.z);
 
-        glRotatef(rotation.x, 1.0, 0.0, 0.0);
+        // apply yaw first then pitch
         glRotatef(rotation.y, 0.0, 1.0, 0.0);
+        glRotatef(rotation.x, 1.0, 0.0, 0.0);
         glRotatef(rotation.z, 0.0, 0.0, 1.0);
 
         glScalef(scale.x,scale.y,scale.z);
@@ -66,7 +67,7 @@ void _StaticModelInstance::Push(float x, float y, float z){
 // rotates the object incrementally by a set of (x,y,z) angles
 void _StaticModelInstance::Rotate(float x, float y, float z) {
     if(!isRotatable) return;
-    // rotate (x,y,z) units per second 
+    // rotate (x,y,z) units per second
     rotation.x += x * _Time::deltaTime;
     rotation.y += y * _Time::deltaTime;
     rotation.z += z * _Time::deltaTime;
@@ -99,37 +100,37 @@ void _StaticModelInstance::DrawColliders(){
 }
 
 bool _StaticModelInstance::CheckCollision(_StaticModelInstance* other) {
-    
+
     // loop through all of our model space colliders
     for (_Collider* myModelCol : this->colliders) {
-        
+
         // create a temporary, world-space collider
         _Collider* myWorldCol = myModelCol->GetWorldSpaceCollider(this->pos, this->scale, this->rotation);
-        
+
         // loop through all of the other instance's model space colliders
         for (_Collider* otherModelCol : other->colliders) {
-            
+
             // create a temporary, world-space collider for them
             _Collider* otherWorldCol = otherModelCol->GetWorldSpaceCollider(other->pos, other->scale, other->rotation);
-            
+
             // perform the collision check
             if (myWorldCol->CheckCollision(otherWorldCol)) {
-                
+
                 // delete the temporary colliders
-                delete myWorldCol; 
+                delete myWorldCol;
                 delete otherWorldCol;
-                
+
                 return true; // found a collision
             }
-            
+
             // clean up the inner temporary collider
             delete otherWorldCol;
         }
-        
+
         // clean up the outer temporary collider
         delete myWorldCol;
     }
-    
+
     // no overlapping colliders were found
     return false;
 }
