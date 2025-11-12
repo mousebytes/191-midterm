@@ -263,3 +263,256 @@
 1762864255 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_targetmanager.cpp
 	"_TargetManager.h"
 
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\main.cpp
+	<windows.h>
+	<stdlib.h>
+	<iostream>
+	<windows.h>
+	<gl/gl.h>
+	<_scene.h>
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_scene.h
+	<_common.h>
+	<_light.h>
+	<_model.h>
+	<_inputs.h>
+	<_textureloader.h>
+	<_parallax.h>
+	<_skybox.h>
+	<_sprite.h>
+	<_timer.h>
+	<_3dmodelloader.h>
+	<_camera.h>
+	<_collisioncheck.h>
+	"_StaticModelInstance.h"
+	"_inputs.h"
+	"_Button.h"
+	"_skybox.h"
+	"_Collider.h"
+	"_CubeHitbox.h"
+	"_SphereHitbox.h"
+	"_AnimatedModelInstance.h"
+	"_Player.h"
+	"_Bullets.h"
+	"_TargetManager.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_common.h
+	<iostream>
+	<windows.h>
+	<string>
+	<gl/gl.h>
+	<GL/glut.h>
+	<math.h>
+	<stdlib.h>
+	<time.h>
+	<chrono>
+	<fstream>
+	<vector>
+	<list>
+	<sstream>
+	<limits>
+	<algorithm>
+	<cmath>
+	<map>
+	"_Time.h"
+
+1762655692 d:\fresno state stuff\csci 191\common\include\gl\glut.h
+	<windows.h>
+	<stdlib.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_time.h
+	"_common.h"
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_light.h
+	<_common.h>
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_model.h
+	<_common.h>
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_inputs.h
+	<_common.h>
+	<_model.h>
+	<_parallax.h>
+	<_skybox.h>
+	<_sprite.h>
+	<_camera.h>
+	<_3dmodelloader.h>
+	"_StaticModelInstance.h"
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_parallax.h
+	<_common.h>
+	<_textureLoader.h>
+	<_timer.h>
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_textureloader.h
+	<_common.h>
+	<SOIL2.h>
+
+1762655692 d:\fresno state stuff\csci 191\common\include\soil2.h
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_timer.h
+	<_common.h>
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_skybox.h
+	<_common.h>
+	<_textureloader.h>
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_sprite.h
+	<_common.h>
+	<_textureloader.h>
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_camera.h
+	<_common.h>
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_3dmodelloader.h
+	<_common.h>
+	<_textureloader.h>
+	"Anorms.h"
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\anorms.h
+
+1762737224 d:\fresno state stuff\csci 191\191-midterm\include\_staticmodelinstance.h
+	"_StaticModel.h"
+	"_common.h"
+	"_Collider.h"
+
+1762739431 d:\fresno state stuff\csci 191\191-midterm\include\_staticmodel.h
+	<_common.h>
+	<_textureloader.h>
+	"_ObjModel.h"
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_objmodel.h
+	"_common.h"
+	"_textureloader.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_collider.h
+	"_common.h"
+
+1762655719 d:\fresno state stuff\csci 191\191-midterm\include\_collisioncheck.h
+	<_common.h>
+
+1762737224 d:\fresno state stuff\csci 191\191-midterm\include\_button.h
+	"_common.h"
+	"_textureloader.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_cubehitbox.h
+	"_Collider.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_spherehitbox.h
+	"_Collider.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_animatedmodelinstance.h
+	<_common.h>
+	"_AnimatedModel.h"
+	"_Collider.h"
+	"_StaticModelInstance.h"
+	"_CubeHitbox.h"
+	"_SphereHitbox.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_animatedmodel.h
+	<_common.h>
+	"_ObjModel.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_player.h
+	"_camera.h"
+	"_inputs.h"
+	"_common.h"
+	"_AnimatedModelInstance.h"
+	"_StaticModelInstance.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_bullets.h
+	"_common.h"
+	"_StaticModelInstance.h"
+	"_AnimatedModelInstance.h"
+	"_SphereHitbox.h"
+	"_CubeHitbox.h"
+
+1762923837 d:\fresno state stuff\csci 191\191-midterm\include\_targetmanager.h
+	"_AnimatedModel.h"
+	"_AnimatedModelInstance.h"
+	"_SphereHitbox.h"
+	"_common.h"
+	"_Bullets.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_3dmodelloader.cpp
+	"_3dmodelloader.h"
+
+1762737224 source:d:\fresno state stuff\csci 191\191-midterm\src\_button.cpp
+	"_Button.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_collisioncheck.cpp
+	"_collisioncheck.h"
+
+1762737224 source:d:\fresno state stuff\csci 191\191-midterm\src\_hitbox.cpp
+	"_Hitbox.h"
+
+1762737224 d:\fresno state stuff\csci 191\191-midterm\include\_hitbox.h
+	"_common.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_light.cpp
+	"_light.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_model.cpp
+	"_model.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_objmodel.cpp
+	"_ObjModel.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_parallax.cpp
+	"_parallax.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_sprite.cpp
+	"_sprite.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_staticmodel.cpp
+	"_StaticModel.h"
+
+1762660185 source:d:\fresno state stuff\csci 191\191-midterm\src\_textureloader.cpp
+	"_textureloader.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_time.cpp
+	"_Time.h"
+
+1762655719 source:d:\fresno state stuff\csci 191\191-midterm\src\_timer.cpp
+	"_timer.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_animatedmodel.cpp
+	"_AnimatedModel.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_animatedmodelinstance.cpp
+	"_AnimatedModelInstance.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_bullets.cpp
+	"_Bullets.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_camera.cpp
+	"_camera.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_cubehitbox.cpp
+	"_CubeHitbox.h"
+	"_SphereHitbox.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_inputs.cpp
+	"_inputs.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_player.cpp
+	"_Player.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_scene.cpp
+	"_scene.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_skybox.cpp
+	"_skybox.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_spherehitbox.cpp
+	"_SphereHitbox.h"
+	"_CubeHitbox.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_staticmodelinstance.cpp
+	"_StaticModelInstance.h"
+
+1762923837 source:d:\fresno state stuff\csci 191\191-midterm\src\_targetmanager.cpp
+	"_TargetManager.h"
+
