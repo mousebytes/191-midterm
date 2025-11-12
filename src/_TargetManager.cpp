@@ -40,7 +40,7 @@ void _TargetManager::SpawnTarget(){
     newInstance->AddCollider(new _SphereHitbox(Vector3(0,0,0),1.0f,COLLIDER_TARGET));
 
     //custom gravity factor
-    newInstance->gravity = 1.0f;
+    newInstance->gravity = 2.5f;
 
     // tell target to play default animation
     newInstance->PlayAnimation("idle", 1.0f);
@@ -60,13 +60,13 @@ void _TargetManager::UpdateTargetPhysics(_Target* target)
     if (targetInstance->colliders.empty()) return;
 
     _Collider* targetMainCollider = targetInstance->colliders[0];
-    
+
     // get the target's collider at its current world position
     _Collider* targetCurrentCollider = targetMainCollider->GetWorldSpaceCollider(
-                                            targetInstance->pos, 
-                                            targetInstance->scale, 
+                                            targetInstance->pos,
+                                            targetInstance->scale,
                                             targetInstance->rotation);
-    
+
     if (targetCurrentCollider)
     {
         // check against all registered static colliders (the terrain)
@@ -75,8 +75,8 @@ void _TargetManager::UpdateTargetPhysics(_Target* target)
             for (_Collider* staticCollider : staticModel->colliders)
             {
                 _Collider* staticWorldCollider = staticCollider->GetWorldSpaceCollider(
-                                                    staticModel->pos, 
-                                                    staticModel->scale, 
+                                                    staticModel->pos,
+                                                    staticModel->scale,
                                                     staticModel->rotation);
                 if (staticWorldCollider)
                 {
@@ -87,7 +87,7 @@ void _TargetManager::UpdateTargetPhysics(_Target* target)
                         if (staticCollider->m_type == COLLIDER_FLOOR)
                         {
                             targetInstance->isGrounded = true; // <-- THE FIX!
-                            
+
                             if(targetInstance->velocity.y < 0) { // if falling
                                 targetInstance->velocity.y = 0; // stop falling
                             }
