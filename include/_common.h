@@ -100,5 +100,6 @@ struct Vector2{
 };
 
 extern bool isDebug;
+extern bool colliderDrawFace;
 
 #endif // _COMMON_H

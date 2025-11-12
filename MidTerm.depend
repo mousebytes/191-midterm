@@ -7,7 +7,7 @@
 	<gl/gl.h>
 	<_scene.h>
 
-1762863979 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
+1762945620 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
 	<_common.h>
 	<_light.h>
 	<_model.h>
@@ -32,7 +32,7 @@
 	"_Bullets.h"
 	"_TargetManager.h"
 
-1762860833 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
+1762942451 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_common.h
 	<iostream>
 	<windows.h>
 	<string>
@@ -140,7 +140,7 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_parallax.cpp
 	"_parallax.h"
 
-1762865592 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
+1762946580 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
 	"_scene.h"
 
 1762771774 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
@@ -215,7 +215,7 @@
 1762684664 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_button.cpp
 	"_Button.h"
 
-1762852044 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_cubehitbox.cpp
+1762943231 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_cubehitbox.cpp
 	"_CubeHitbox.h"
 	"_SphereHitbox.h"
 
@@ -225,7 +225,7 @@
 1762688775 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_hitbox.h
 	"_common.h"
 
-1762773107 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_spherehitbox.cpp
+1762942626 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_spherehitbox.cpp
 	"_SphereHitbox.h"
 	"_CubeHitbox.h"
 
@@ -250,7 +250,7 @@
 	"_AnimatedModelInstance.h"
 	"_StaticModelInstance.h"
 
-1762862931 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_player.cpp
+1762944159 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_player.cpp
 	"_Player.h"
 
 1762858827 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_targetmanager.h
@@ -260,7 +260,7 @@
 	"_common.h"
 	"_Bullets.h"
 
-1762864255 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_targetmanager.cpp
+1762932382 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_targetmanager.cpp
 	"_TargetManager.h"
 
 1762655719 source:d:\fresno state stuff\csci 191\191-midterm\main.cpp

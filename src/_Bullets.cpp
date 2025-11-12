@@ -17,7 +17,7 @@ struct _Bullet{
         velocity=vel;
         lifetime=life;
 
-        instance->rotation.x = pitch;
+        instance->rotation.x = -pitch;
         instance->rotation.y = yaw;
         instance->rotation.z = 0.0f; // No roll
 

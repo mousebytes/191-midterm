@@ -15,7 +15,7 @@ _Player::_Player(_AnimatedModel* modelBlueprint)
     // init player brain variables
     m_cameraPitch = 0.0f;
     m_playerYaw = 0.0f;
-    m_moveSpeed = 30.0f;
+    m_moveSpeed = 70.0f;
     m_mouseSensitivity = 0.1f;
 
     isFrozen = false;
@@ -212,14 +212,14 @@ void _Player::UpdatePhysics()
         m_body->PlayAnimation("idle", 1.0f); 
     } else if (abs(m_body->velocity.x) > 0.01f || abs(m_body->velocity.z) > 0.01f) {
         // m_body->PlayAnimation("run", 1.0f);
-        m_body->PlayAnimation("idle", 1.0f); 
-    } else {
+        m_body->PlayAnimation("walk", 1.0f); 
+    } else{
         // player is on the ground and not moving
         m_body->PlayAnimation("idle", 1.0f);
     }
 
     // reset horz velocity so the player stops when
-    // no keys are pressed *next frame*
+    // no keys are pressed next frame
     m_body->velocity.x = 0;
     m_body->velocity.z = 0;
 }
@@ -231,7 +231,7 @@ void _Player::UpdateCamera(_camera* cam)
     else {isFrozen=false;}
 
     // how high the eyes are above the model's origin
-    float eyeHeight = 1.5f; 
+    float eyeHeight = 1.1f; 
     
     // set camera's eye position to the player's body position
     cam->eye = m_body->pos;

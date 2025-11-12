@@ -18,38 +18,44 @@ void _SphereHitbox::Draw() {
     glTranslatef(center.x, center.y, center.z);
 
     //glutSolidSphere()
+
+    if(colliderDrawFace){
+        glutSolidSphere(radius,16,16);
+    }else{
+        const int segments = 16;
+
+        // XY Circle
+        glBegin(GL_LINE_LOOP);
+        for(int i = 0; i < segments; i++) {
+            float theta = 2.0f * PI * float(i) / float(segments);
+            float x = radius * cosf(theta);
+            float y = radius * sinf(theta);
+            glVertex3f(x, y, 0);
+        }
+        glEnd();
+
+        // XZ Circle
+        glBegin(GL_LINE_LOOP);
+        for(int i = 0; i < segments; i++) {
+            float theta = 2.0f * PI * float(i) / float(segments);
+            float x = radius * cosf(theta);
+            float z = radius * sinf(theta);
+            glVertex3f(x, 0, z);
+        }
+        glEnd();
+
+        // YZ Circle
+        glBegin(GL_LINE_LOOP);
+        for(int i = 0; i < segments; i++) {
+            float theta = 2.0f * PI * float(i) / float(segments);
+            float y = radius * cosf(theta);
+            float z = radius * sinf(theta);
+            glVertex3f(0, y, z);
+        }
+    glEnd();
+    }
     
-    const int segments = 16;
-
-    // XY Circle
-    glBegin(GL_LINE_LOOP);
-    for(int i = 0; i < segments; i++) {
-        float theta = 2.0f * PI * float(i) / float(segments);
-        float x = radius * cosf(theta);
-        float y = radius * sinf(theta);
-        glVertex3f(x, y, 0);
-    }
-    glEnd();
-
-    // XZ Circle
-    glBegin(GL_LINE_LOOP);
-    for(int i = 0; i < segments; i++) {
-        float theta = 2.0f * PI * float(i) / float(segments);
-        float x = radius * cosf(theta);
-        float z = radius * sinf(theta);
-        glVertex3f(x, 0, z);
-    }
-    glEnd();
-
-    // YZ Circle
-    glBegin(GL_LINE_LOOP);
-    for(int i = 0; i < segments; i++) {
-        float theta = 2.0f * PI * float(i) / float(segments);
-        float y = radius * cosf(theta);
-        float z = radius * sinf(theta);
-        glVertex3f(0, y, z);
-    }
-    glEnd();
+    
 
     glPopMatrix();
     

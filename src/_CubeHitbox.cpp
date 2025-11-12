@@ -1,8 +1,8 @@
 #include"_CubeHitbox.h"
 #include"_SphereHitbox.h"
 
-bool isDebug = false;
-bool drawTopFace = true;
+bool isDebug = true;
+bool colliderDrawFace = false;
 
 _CubeHitbox::_CubeHitbox(Vector3 vMin, Vector3 vMax, ColliderType type) {
     min = vMin;
@@ -14,18 +14,53 @@ void _CubeHitbox::Draw() {
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
-    glColor3f(1.0f, 0, 0);
+    glColor4f(1.0f, 0, 0,0.5f);
 
-    if (drawTopFace) {
-        
-
-        // draw the top face as a solid quad
+    if (colliderDrawFace) {
+        // draw all 6 faces of the cube as solid quads
         glBegin(GL_QUADS);
-            glNormal3f(0.0f, 1.0f, 0.0f); // Normal pointing up
+            // top face (Y+)
+            glNormal3f(0.0f, 1.0f, 0.0f);
             glVertex3f(min.x, max.y, min.z); // top left near
             glVertex3f(max.x, max.y, min.z); // top right near
             glVertex3f(max.x, max.y, max.z); // top right far
             glVertex3f(min.x, max.y, max.z); // top left far
+
+            // bottom face (Y-)
+            glNormal3f(0.0f, -1.0f, 0.0f);
+            glVertex3f(min.x, min.y, min.z); // bottom left near
+            glVertex3f(min.x, min.y, max.z); // bottom left far
+            glVertex3f(max.x, min.y, max.z); // bottom right far
+            glVertex3f(max.x, min.y, min.z); // bottom right near
+
+            // front face (Z+)
+            glNormal3f(0.0f, 0.0f, 1.0f);
+            glVertex3f(min.x, min.y, max.z); // bottom left
+            glVertex3f(min.x, max.y, max.z); // top left
+            glVertex3f(max.x, max.y, max.z); // top right
+            glVertex3f(max.x, min.y, max.z); // bottom right
+
+            // back face (Z-)
+            glNormal3f(0.0f, 0.0f, -1.0f);
+            glVertex3f(min.x, min.y, min.z); // bottom left
+            glVertex3f(max.x, min.y, min.z); // bottom right
+            glVertex3f(max.x, max.y, min.z); // top right
+            glVertex3f(min.x, max.y, min.z); // top left
+
+            // left face (X-)
+            glNormal3f(-1.0f, 0.0f, 0.0f);
+            glVertex3f(min.x, min.y, min.z); // bottom near
+            glVertex3f(min.x, max.y, min.z); // top near
+            glVertex3f(min.x, max.y, max.z); // top far
+            glVertex3f(min.x, min.y, max.z); // bottom far
+
+            // right face (X+)
+            glNormal3f(1.0f, 0.0f, 0.0f);
+            glVertex3f(max.x, min.y, min.z); // bottom near
+            glVertex3f(max.x, min.y, max.z); // bottom far
+            glVertex3f(max.x, max.y, max.z); // top far
+            glVertex3f(max.x, max.y, min.z); // top near
+            
         glEnd();
     }
     else{
@@ -36,17 +71,14 @@ void _CubeHitbox::Draw() {
             glVertex3f(max.x, max.y, max.z);
             glVertex3f(min.x, max.y, max.z);
         glEnd();
-    }
 
-    glColor3f(1.0f, 0.0f, 0.0f); // Red
-    
-    // Bottom face
-    glBegin(GL_LINE_LOOP);
-        glVertex3f(min.x, min.y, min.z);
-        glVertex3f(max.x, min.y, min.z);
-        glVertex3f(max.x, min.y, max.z);
-        glVertex3f(min.x, min.y, max.z);
-    glEnd();
+        // Bottom face
+        glBegin(GL_LINE_LOOP);
+            glVertex3f(min.x, min.y, min.z);
+            glVertex3f(max.x, min.y, min.z);
+            glVertex3f(max.x, min.y, max.z);
+            glVertex3f(min.x, min.y, max.z);
+        glEnd();
 
     
 
@@ -57,11 +89,16 @@ void _CubeHitbox::Draw() {
         glVertex3f(max.x, min.y, max.z); glVertex3f(max.x, max.y, max.z);
         glVertex3f(min.x, min.y, max.z); glVertex3f(min.x, max.y, max.z);
     glEnd();
+    }
+
+    //glColor3f(1.0f, 0.0f, 0.0f); // Red
+    
+    
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor4f(1.0f, 1.0f, 1.0f,1.0f);
 }
 
 _Collider* _CubeHitbox::GetWorldSpaceCollider(const Vector3& pos, const Vector3& scale, const Vector3& rot) {

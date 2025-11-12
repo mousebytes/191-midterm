@@ -46,6 +46,13 @@ class _Scene
         void drawGameplay();
         void handleGameplayInput(HWND,UINT,WPARAM,LPARAM);
 
+        // --- Landing Page Scene ---
+        _Button *m_landingTitle;
+        _Button *m_landingInstructions;
+        void initLandingPage();
+        void drawLandingPage();
+        void handleLandingPageInput(UINT,WPARAM,LPARAM);
+
         // --- Main Menu Scene ---
         _Button *m_playButton;
         _Button *m_helpButton;
@@ -60,6 +67,8 @@ class _Scene
         void initHelpScreen();
         void drawHelpScreen();
         void handleHelpScreenInput(UINT,WPARAM,LPARAM);
+
+
 
     protected:
 
@@ -83,8 +92,8 @@ class _Scene
         _StaticModel* m_gunBlueprint;
         _StaticModelInstance* m_gunInstance;
 
-        enum SceneState {MainMenu, Help, Playing, Paused};
-        SceneState m_sceneState = SceneState::MainMenu;
+        enum SceneState {LandingPage, MainMenu, Help, Playing, Paused};
+        SceneState m_sceneState;
 
         void draw2DOverlay();
         void handleMouseMovement(HWND hWnd, LPARAM lParam);

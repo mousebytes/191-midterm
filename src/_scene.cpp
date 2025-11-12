@@ -9,6 +9,8 @@ _Scene::_Scene()
     m_camera = new _camera();
     //m_playButton = new _Button();
 
+    m_landingTitle=new _Button();
+    m_landingInstructions = new _Button();
     m_playButton = new _Button();
     m_helpButton = new _Button();
     m_exitButton = new _Button();
@@ -20,7 +22,6 @@ _Scene::_Scene()
 
 
     m_bulletBlueprint = new _StaticModel();
-    //m_bulletInstance = new _StaticModelInstance(m_bulletBlueprint);
     m_bulletManager = nullptr;
 
     m_targetBlueprint = new _AnimatedModel();
@@ -39,7 +40,8 @@ _Scene::~_Scene()
     delete m_inputs;
     delete m_camera;
 
-    //delete m_playButton;
+    delete m_landingTitle;
+    delete m_landingInstructions;
     delete m_playButton;
     delete m_helpButton;
     delete m_exitButton;
@@ -117,10 +119,11 @@ void _Scene::initGL()
     glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
 
     initGameplay();
+    initLandingPage();
     initMainMenu();
     initHelpScreen();
 
-    m_sceneState = SceneState::MainMenu;
+    m_sceneState = SceneState::LandingPage;
 }
 
 void _Scene::drawScene()
@@ -131,6 +134,9 @@ void _Scene::drawScene()
 
     switch (m_sceneState)
     {
+        case SceneState::LandingPage:
+            drawLandingPage();
+            break;
         case SceneState::MainMenu:
             drawMainMenu();
             break;
@@ -170,6 +176,9 @@ int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (m_sceneState)
     {
+        case SceneState::LandingPage:
+            handleLandingPageInput(uMsg,wParam,lParam);
+            break;
         case SceneState::MainMenu:
             handleMainMenuInput(uMsg, wParam, lParam);
             break;
@@ -181,6 +190,19 @@ int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             break;
     }
     return 0;
+}
+
+void _Scene::handleLandingPageInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    // check for a left mouse click or the enter key press
+    if (uMsg == WM_LBUTTONDOWN)
+    {
+        m_sceneState = SceneState::MainMenu;
+    }
+    else if (uMsg == WM_KEYDOWN && wParam == VK_RETURN)
+    {
+        m_sceneState = SceneState::MainMenu;
+    }
 }
 
 void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -251,6 +273,9 @@ void _Scene::handleMainMenuInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
         else if (m_helpButton->isClicked(mouseX, mouseY)) {
             m_sceneState = SceneState::Help;
         }
+        else if (m_exitButton->isClicked(mouseX,mouseY)){
+            exit(0);
+        }
 
     }
 }
@@ -268,11 +293,18 @@ void _Scene::handleHelpScreenInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
 }
 
+void _Scene::initLandingPage()
+{
+    // positions are 2d pixels, assumes (0,0) is top left
+    m_landingTitle->Init("images/MidtermTitle.png", 400, 400, width/2, height/2, 0, 1, 1);
+    m_landingInstructions->Init("images/landing_instructions.png", 300, 300, width/2, height/1.2f, 0, 1, 1);
+}
+
 void _Scene::initGameplay()
 {
     terrainBlueprint->LoadModel("models/terrain.obj","models/Terrain_Tex.png");
-    terrainInstance->pos = Vector3(0,-1,-5);
-    terrainInstance->scale = Vector3(50,50,50);
+    terrainInstance->pos = Vector3(0,20,-5);
+    terrainInstance->scale = Vector3(150,150,150);
     terrainInstance->SetPushable(true);
     terrainInstance->SetRotatable(true);
 
@@ -287,26 +319,40 @@ void _Scene::initGameplay()
     // Define a tall height for the walls in model space
     float wallMinY = -1.0f;
     float wallMaxY = 10.0f;
-    float thickness = 0.1f; // Model-space thickness
+    float thickness = 0.1f; // local space thickness
+
+    // North, South, East, West
+    // are determined by camera yaw = 0
+    // forward (W) = -Z - south
+    // backward (S) = +Z - north
+    // right (D) = +X - east
+    // left (A) = -X - west
+
 
     // wall 1 far Z - just beyond the +1.0 z-edge
-    Vector3 wallNorthMin = Vector3(-1.0f, wallMinY, 1.0f);
-    Vector3 wallNorthMax = Vector3(1.0f, wallMaxY, 1.0f + thickness);
-    terrainInstance->AddCollider(new _CubeHitbox(wallNorthMin, wallNorthMax, COLLIDER_WALL));
-
-    // wall 2 naer z - just beyond the -1.0 z-edge
-    Vector3 wallSouthMin = Vector3(-1.0f, wallMinY, -1.0f - thickness);
-    Vector3 wallSouthMax = Vector3(1.0f, wallMaxY, -1.0f);
+    Vector3 wallSouthMin = Vector3(-0.5f, wallMinY, 0.5f);
+    Vector3 wallSouthMax = Vector3(0.5f, wallMaxY, 0.5f + thickness);
     terrainInstance->AddCollider(new _CubeHitbox(wallSouthMin, wallSouthMax, COLLIDER_WALL));
 
+    // wall 2 naer z - just beyond the -1.0 z-edge
+    Vector3 wallNorthMin = Vector3(-0.5f, wallMinY, -0.5f - thickness);
+    Vector3 wallNorthMax = Vector3(0.5f, wallMaxY, -0.5f);
+    terrainInstance->AddCollider(new _CubeHitbox(wallNorthMin, wallNorthMax, COLLIDER_WALL));
+
     // wall 3 right x  - just beyond the +1.0 x-edge
-    Vector3 wallEastMin = Vector3(1.0f, wallMinY, -1.0f);
-    Vector3 wallEastMax = Vector3(1.0f + thickness, wallMaxY, 1.0f);
+    Vector3 wallEastMin = Vector3(0.45f, wallMinY, -0.5f);
+    Vector3 wallEastMax = Vector3(0.45f + thickness, wallMaxY, 0.5f);
     terrainInstance->AddCollider(new _CubeHitbox(wallEastMin, wallEastMax, COLLIDER_WALL));
 
+    Vector3 sphereWallSouthEast = Vector3(0.3f,-0.3f,-0.4f);
+    terrainInstance->AddCollider(new _SphereHitbox(sphereWallSouthEast,0.2f,COLLIDER_WALL));
+
+    Vector3 sphereWallNorthEast = Vector3(0.4f,-0.3f,0.35f);
+    terrainInstance->AddCollider(new _SphereHitbox(sphereWallNorthEast,0.3f,COLLIDER_WALL));
+
     // wall 4 left x - just beyond the -1.0 x-edge
-    Vector3 wallWestMin = Vector3(-1.0f - thickness, wallMinY, -1.0f);
-    Vector3 wallWestMax = Vector3(-1.0f, wallMaxY, 1.0f);
+    Vector3 wallWestMin = Vector3(-0.25f - thickness, wallMinY, -0.5f);
+    Vector3 wallWestMax = Vector3(-0.25f, wallMaxY, 0.5f);
     terrainInstance->AddCollider(new _CubeHitbox(wallWestMin, wallWestMax, COLLIDER_WALL));
 
     m_camera->camInit();
@@ -320,7 +366,8 @@ void _Scene::initGameplay()
     m_skybox->tex[5] = m_skybox->textures->loadTexture("images/skybox/left.jpg");
 
     m_player_blueprint->LoadTexture("models/player/Human_Atlas.png");
-    m_player_blueprint->RegisterAnimation("idle","models/player/idle",2);
+    m_player_blueprint->RegisterAnimation("idle","models/player/walk",2);
+    //m_player_blueprint->RegisterAnimation("walk","models/player/walk",2);
 
     m_player = new _Player(m_player_blueprint);
     m_player->RegisterStaticCollider(terrainInstance);
@@ -335,7 +382,7 @@ void _Scene::initGameplay()
 
     // TARGET MANAGER
     m_targetBlueprint->LoadTexture("models/player/Human_Atlas.png");
-    m_targetBlueprint->RegisterAnimation("idle","models/player/idle",2);
+    m_targetBlueprint->RegisterAnimation("idle","models/player/walk",2);
 
     m_targetManager = new _TargetManager(m_targetBlueprint);
 
@@ -350,13 +397,13 @@ void _Scene::initMainMenu()
 {
     // positions are 2d pixels, assumes (0,0) is top left
     m_playButton->Init("images/play-btn.png", 200, 70, width/2, height/2 - 100, 0, 1, 1);
-    m_helpButton->Init("images/play-btn.png", 200, 70, width/2, height/2, 0, 1, 1); // Using play-btn as placeholder
-    m_exitButton->Init("images/play-btn.png", 200, 70, width/2, height/2 + 100, 0, 1, 1); // Using play-btn as placeholder
+    m_helpButton->Init("images/help-btn.png", 200, 70, width/2, height/2, 0, 1, 1); // Using play-btn as placeholder
+    m_exitButton->Init("images/exit-btn.png", 200, 70, width/2, height/2 + 100, 0, 1, 1); // Using play-btn as placeholder
 }
 
 void _Scene::initHelpScreen()
 {
-    m_backButton->Init("images/play-btn.png", 150, 50, 100, height - 100, 0, 1, 1); // Placeholder
+    m_backButton->Init("images/exit-btn.png", 150, 50, 100, height - 100, 0, 1, 1); // Placeholder
 }
 
 void _Scene::draw2DOverlay()
@@ -433,6 +480,20 @@ void _Scene::drawGameplay()
     m_gunBlueprint->Draw();
     glEnable(GL_CULL_FACE);
    
+}
+
+void _Scene::drawLandingPage()
+{
+    draw2DOverlay(); // set up 2D drawing
+
+    // draw the title
+    m_landingTitle->Draw();
+    m_landingInstructions->Draw();
+
+    // restore 3D projection
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void _Scene::drawMainMenu()

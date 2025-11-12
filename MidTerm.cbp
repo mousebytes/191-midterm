@@ -59,6 +59,7 @@
 		<Unit filename="include/_SphereHitbox.h" />
 		<Unit filename="include/_StaticModel.h" />
 		<Unit filename="include/_StaticModelInstance.h" />
+		<Unit filename="include/_TargetManager.h" />
 		<Unit filename="include/_Time.h" />
 		<Unit filename="include/_camera.h" />
 		<Unit filename="include/_collisioncheck.h" />
@@ -85,6 +86,7 @@
 		<Unit filename="src/_SphereHitbox.cpp" />
 		<Unit filename="src/_StaticModel.cpp" />
 		<Unit filename="src/_StaticModelInstance.cpp" />
+		<Unit filename="src/_TargetManager.cpp" />
 		<Unit filename="src/_Time.cpp" />
 		<Unit filename="src/_camera.cpp" />
 		<Unit filename="src/_collisioncheck.cpp" />
