@@ -11,10 +11,17 @@ _Scene::_Scene()
 
     m_landingTitle=new _Button();
     m_landingInstructions = new _Button();
+    m_helpInfo = new _Button();
     m_playButton = new _Button();
     m_helpButton = new _Button();
     m_exitButton = new _Button();
     m_backButton = new _Button();
+
+    // pause menu stuff
+    m_resumeButton = new _Button();
+    m_pauseHelpButton = new _Button();
+    m_pauseMenuButton = new _Button();
+    m_showPauseHelp = false;
 
     m_skybox = new _skyBox();
 
@@ -60,6 +67,10 @@ _Scene::~_Scene()
 
     delete m_gunBlueprint;
     delete m_gunInstance;
+    
+    delete m_resumeButton;
+    delete m_pauseHelpButton;
+    delete m_pauseMenuButton;
 }
 
 void _Scene::reSizeScene(int width, int height)
@@ -83,8 +94,6 @@ void _Scene::reSizeScene(int width, int height)
 
 void _Scene::initGL()
 {
-    // i know this is redundant since it's in main.cpp
-    // but this allows me to access it much easier
     _Time::Init();
     glShadeModel(GL_SMOOTH); // to handle GPU shaders
     glClearColor(0.0f,0.0f,0.0f,0.0f); // black background color
@@ -122,6 +131,7 @@ void _Scene::initGL()
     initLandingPage();
     initMainMenu();
     initHelpScreen();
+    initPauseMenu();
 
     m_sceneState = SceneState::LandingPage;
 }
@@ -141,8 +151,11 @@ void _Scene::drawScene()
             drawMainMenu();
             break;
         case SceneState::Paused:
-            // TODO: THIS
+            drawGameplay();   // Draw the frozen game world
+            drawPauseMenu();  // Draw the pause menu on top
+            break;
         case SceneState::Playing:
+            updateGameplay();
             drawGameplay();
             break;
         case SceneState::Help:
@@ -188,6 +201,9 @@ int _Scene::winMsg(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case SceneState::Help:
             handleHelpScreenInput(uMsg, wParam, lParam);
             break;
+        case SceneState::Paused: 
+            handlePauseMenuInput(uMsg, wParam, lParam);
+            break;
     }
     return 0;
 }
@@ -210,6 +226,14 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     switch(uMsg)
     {
         case WM_KEYDOWN:
+
+            if (wParam == VK_ESCAPE)
+            {
+                m_sceneState = SceneState::Paused;
+                m_player->isFrozen = true; // freeze player logic
+                break; // dont process other keys
+            }
+
             m_inputs->wParam = wParam;
             // for free cam
             m_inputs->keyPressed(m_camera);
@@ -269,6 +293,8 @@ void _Scene::handleMainMenuInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         if (m_playButton->isClicked(mouseX, mouseY)) {
             m_sceneState = SceneState::Playing;
+            m_player->isFrozen = false; // unfreeze player when starting game
+            m_showPauseHelp = false; // reset pause help flag
         }
         else if (m_helpButton->isClicked(mouseX, mouseY)) {
             m_sceneState = SceneState::Help;
@@ -289,6 +315,55 @@ void _Scene::handleHelpScreenInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         if (m_backButton->isClicked(mouseX, mouseY)) {
             m_sceneState = SceneState::MainMenu;
+        }
+    }
+    else if (uMsg == WM_KEYDOWN && wParam == VK_ESCAPE)
+    {
+        m_sceneState = SceneState::MainMenu;
+    }
+}
+
+void _Scene::handlePauseMenuInput(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    // always allow esc to resume regardless of overlay
+    if (uMsg == WM_KEYDOWN && wParam == VK_ESCAPE)
+    {
+        m_sceneState = SceneState::Playing;
+        m_player->isFrozen = false;
+        m_showPauseHelp = false; // hide help overlay
+        return;
+    }
+
+    if (uMsg == WM_LBUTTONDOWN)
+    {
+        int mouseX = LOWORD(lParam);
+        int mouseY = HIWORD(lParam);
+
+        if (m_showPauseHelp)
+        {
+            // if help is showing, only check the back button
+            if (m_backButton->isClicked(mouseX, mouseY))
+            {
+                m_showPauseHelp = false;
+            }
+        }
+        else
+        {
+            // help is not showing, check main pause buttons
+            if (m_resumeButton->isClicked(mouseX, mouseY))
+            {
+                m_sceneState = SceneState::Playing;
+                m_player->isFrozen = false;
+            }
+            else if (m_pauseHelpButton->isClicked(mouseX, mouseY))
+            {
+                m_showPauseHelp = true;
+            }
+            else if (m_pauseMenuButton->isClicked(mouseX, mouseY))
+            {
+                m_sceneState = SceneState::MainMenu;
+                // player will be unfrozen (isFrozen=false) when play is clicked from main menu
+            }
         }
     }
 }
@@ -404,6 +479,14 @@ void _Scene::initMainMenu()
 void _Scene::initHelpScreen()
 {
     m_backButton->Init("images/exit-btn.png", 150, 50, 100, height - 100, 0, 1, 1); // Placeholder
+    m_helpInfo->Init("images/help-page.png",width/2,height/2,width/2,height/2,0,1,1);
+}
+
+void _Scene::initPauseMenu()
+{
+    m_resumeButton->Init("images/play-btn.png", 200, 70, width/2, height/2 - 100, 0, 1, 1);
+    m_pauseHelpButton->Init("images/help-btn.png", 200, 70, width/2, height/2, 0, 1, 1);
+    m_pauseMenuButton->Init("images/exit-btn.png", 200, 70, width/2, height/2 + 100, 0, 1, 1);
 }
 
 void _Scene::draw2DOverlay()
@@ -414,6 +497,7 @@ void _Scene::draw2DOverlay()
     glDisable(GL_CULL_FACE);
 
     glMatrixMode(GL_PROJECTION);
+    // should be popped in the calling function
     glPushMatrix();
     glLoadIdentity();
     // left, right, bottom, top
@@ -422,16 +506,22 @@ void _Scene::draw2DOverlay()
     glLoadIdentity();
 }
 
+void _Scene::updateGameplay()
+{
+    m_player->UpdatePhysics();
+    m_bulletManager->Update();
+    m_targetManager->Update();
+
+    // update cam set eye/des/up based on player
+    m_player->UpdateCamera(m_camera);
+}
+
 void _Scene::drawGameplay()
 {
     // reenable 3D states that the 2D overlay disables
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE); // reenable culling for 3D
-
-    m_player->UpdatePhysics();
-    m_bulletManager->Update();
-    m_targetManager->Update();
 
     // update cam set eye/des/up based on player
     m_player->UpdateCamera(m_camera);
@@ -465,15 +555,14 @@ void _Scene::drawGameplay()
 
     // reset the viewport to the origin
     // we are no longer in the 3D world, we are at (0,0,0)
-    // looking down the Z-axis.
+    // looking down the  zaxis.
     glLoadIdentity();
 
     // move the gun to its static position on the screen
     // X = Left/Right, Y = Up/Down, Z = Forward/Backward
     glTranslatef(0.3f, -0.2f, -0.7f);
 
-    // 5. Scale the gun to the right size
-    // You will also need to TWEAK this!
+    // scale the gun to the right size
     glScalef(0.7f, 0.7f, 0.7f);
 
     glDisable(GL_CULL_FACE);
@@ -513,12 +602,50 @@ void _Scene::drawMainMenu()
 
 void _Scene::drawHelpScreen()
 {
-    draw2DOverlay(); // Set up 2D drawing
+    draw2DOverlay(); // set up 2D drawing
 
-    // draw something here in the future
     m_backButton->Draw();
+    m_helpInfo->Draw();
 
-    // Restore 3D projection
+
+    // restore 3D projection
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void _Scene::drawPauseMenu()
+{
+    draw2DOverlay(); // set up 2D drawing
+
+    // draw a semi transparent black overlay
+    glEnable(GL_BLEND);
+    glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+    glBegin(GL_QUADS);
+        glVertex2f(0, 0);
+        glVertex2f(width, 0);
+        glVertex2f(width, height);
+        glVertex2f(0, height);
+    glEnd();
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glDisable(GL_BLEND);
+
+
+    if (m_showPauseHelp)
+    {
+        // draw the help info and a back button
+        m_helpInfo->Draw();
+        m_backButton->Draw(); // use the existing back button
+    }
+    else
+    {
+        // draw the pause buttons
+        m_resumeButton->Draw();
+        m_pauseHelpButton->Draw();
+        m_pauseMenuButton->Draw();
+    }
+
+    // restore 3D projection
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -526,6 +653,11 @@ void _Scene::drawHelpScreen()
 
 void _Scene::handleMouseMovement(HWND hWnd, LPARAM lParam)
 {
+    if (m_sceneState == SceneState::Paused)
+    {
+        return; // don't move camera if paused
+    }
+
     int mouseX = LOWORD(lParam);
     int mouseY = HIWORD(lParam);
     int centerX = width / 2;

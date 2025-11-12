@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1762643736 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\main.cpp
+1762948442 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\main.cpp
 	<windows.h>
 	<stdlib.h>
 	<iostream>
@@ -7,7 +7,7 @@
 	<gl/gl.h>
 	<_scene.h>
 
-1762945620 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
+1762948677 c:\users\amora\desktop\fresno state stuff\csci 191\midterm\include\_scene.h
 	<_common.h>
 	<_light.h>
 	<_model.h>
@@ -119,7 +119,7 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_3dmodelloader.cpp
 	"_3dmodelloader.h"
 
-1762856523 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_bullets.cpp
+1762946678 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_bullets.cpp
 	"_Bullets.h"
 
 1762822023 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_camera.cpp
@@ -128,7 +128,7 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_collisioncheck.cpp
 	"_collisioncheck.h"
 
-1762821990 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_inputs.cpp
+1762949728 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_inputs.cpp
 	"_inputs.h"
 
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_light.cpp
@@ -140,10 +140,10 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_parallax.cpp
 	"_parallax.h"
 
-1762946580 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
+1762949616 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
 	"_scene.h"
 
-1762771774 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
+1762949818 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
 	"_skybox.h"
 
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_sprite.cpp
@@ -215,7 +215,7 @@
 1762684664 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_button.cpp
 	"_Button.h"
 
-1762943231 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_cubehitbox.cpp
+1762949654 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_cubehitbox.cpp
 	"_CubeHitbox.h"
 	"_SphereHitbox.h"
 

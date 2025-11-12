@@ -20,8 +20,8 @@ void _skyBox::skyBoxInit()
     pos.x = pos.y =0;
     pos.z = -10.0;
 
-    boxSize.x = boxSize.z = 100.0;
-    boxSize.y = 20.0;
+    boxSize.x = boxSize.z = 150.0;
+    boxSize.y = 40.0;
 
 }
 

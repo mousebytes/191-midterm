@@ -44,6 +44,7 @@ class _Scene
 
         void initGameplay();
         void drawGameplay();
+        void updateGameplay();
         void handleGameplayInput(HWND,UINT,WPARAM,LPARAM);
 
         // --- Landing Page Scene ---
@@ -64,10 +65,19 @@ class _Scene
 
         // --- Help Scene ---
         _Button *m_backButton;
+        _Button *m_helpInfo;
         void initHelpScreen();
         void drawHelpScreen();
         void handleHelpScreenInput(UINT,WPARAM,LPARAM);
 
+        // --- Pause Menu ---
+        _Button *m_resumeButton;
+        _Button *m_pauseHelpButton;
+        _Button *m_pauseMenuButton;
+        bool m_showPauseHelp; // To toggle help overlay
+        void initPauseMenu();
+        void drawPauseMenu();
+        void handlePauseMenuInput(UINT,WPARAM,LPARAM);
 
 
     protected:
@@ -83,7 +93,6 @@ class _Scene
         _Player *m_player;
 
         _StaticModel *m_bulletBlueprint;
-        //_StaticModelInstance *m_bulletInstance;
         _Bullets *m_bulletManager;
 
         _AnimatedModel* m_targetBlueprint;
