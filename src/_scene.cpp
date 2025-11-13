@@ -239,6 +239,18 @@ void _Scene::handleGameplayInput(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
             m_inputs->keyPressed(m_camera);
             // for player movement & doing eye cam stuff
             m_player->HandleKeys(wParam);
+
+            if(wParam == '1'){
+                isDebug=!isDebug;
+            }
+            else if(wParam=='2'){
+                colliderDrawFace=!colliderDrawFace;
+                if(!isDebug){
+                    isDebug=true;
+                    colliderDrawFace=true;
+                }
+            }
+
             break;
         case WM_KEYUP:
 

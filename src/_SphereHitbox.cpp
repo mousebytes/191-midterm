@@ -14,7 +14,7 @@ void _SphereHitbox::Draw() {
     
 
     glPushMatrix();
-    glColor3f(0.0f, 1.0f, 0.0f); // Green
+    glColor4f(0.0f, 1.0f, 0.0f,0.5f); // Green
     glTranslatef(center.x, center.y, center.z);
 
     //glutSolidSphere()
@@ -61,7 +61,7 @@ void _SphereHitbox::Draw() {
     
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor4f(1.0f, 1.0f, 1.0f,1.0f);
 }
 
 _Collider* _SphereHitbox::GetWorldSpaceCollider(const Vector3& pos, const Vector3& scale, const Vector3& rot) {
