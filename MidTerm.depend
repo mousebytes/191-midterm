@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1762948442 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\main.cpp
+1762952769 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\main.cpp
 	<windows.h>
 	<stdlib.h>
 	<iostream>
@@ -140,7 +140,7 @@
 1762563177 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_parallax.cpp
 	"_parallax.h"
 
-1762949616 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
+1762998081 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_scene.cpp
 	"_scene.h"
 
 1762949818 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_skybox.cpp
@@ -215,7 +215,7 @@
 1762684664 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_button.cpp
 	"_Button.h"
 
-1762949654 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_cubehitbox.cpp
+1762997296 source:c:\users\amora\desktop\fresno state stuff\csci 191\midterm\src\_cubehitbox.cpp
 	"_CubeHitbox.h"
 	"_SphereHitbox.h"
 
